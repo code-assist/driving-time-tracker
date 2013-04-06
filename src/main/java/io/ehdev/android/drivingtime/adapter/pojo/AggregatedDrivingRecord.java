@@ -22,7 +22,7 @@
 
 package io.ehdev.android.drivingtime.adapter.pojo;
 
-import io.ehdev.android.drivingtime.view.DisplayRecordRow;
+import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 import org.joda.time.Duration;
 
 public class AggregatedDrivingRecord {
@@ -49,12 +49,12 @@ public class AggregatedDrivingRecord {
         return loggedHours.getStandardHours();
     }
 
-    public void setView(DisplayRecordRow record){
+    public void setView(DisplayProgressRecordRow record){
         setProgressBar(record);
         setTextField(record);
     }
 
-    private void setTextField(DisplayRecordRow record) {
+    private void setTextField(DisplayProgressRecordRow record) {
         record.getLeftText().setText(getRecordTitle());
         String percentageDriven;
         if(getLoggedHours() / getRequiredHours() >= 1)
@@ -65,7 +65,7 @@ public class AggregatedDrivingRecord {
         record.getRightText().setText(percentageDriven);
     }
 
-    private void setProgressBar(DisplayRecordRow record) {
+    private void setProgressBar(DisplayProgressRecordRow record) {
         record.setMaxOfProgress(getRequiredHours());
 
         if(getRequiredHours() <= getLoggedHours() )

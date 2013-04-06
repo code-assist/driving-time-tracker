@@ -27,7 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import io.ehdev.android.drivingtime.adapter.pojo.AggregatedDrivingRecord;
-import io.ehdev.android.drivingtime.view.DisplayRecordRow;
+import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
+import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 import java.util.List;
 
@@ -62,10 +63,10 @@ public class DrivingRecordAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if(null == view || !(view instanceof DisplayRecordRow))
-            view = new DisplayRecordRow(viewContext);
+        if(null == view || !(view instanceof DisplayProgressRecordRow))
+            view = new DisplayProgressRecordRow(viewContext);
 
-        DisplayRecordRow displayRecordRow = (DisplayRecordRow) view;
+        DisplayProgressRecordRow displayRecordRow = (DisplayProgressRecordRow) view;
         recordList.get(i).setView(displayRecordRow);
 
         return view;  //To change body of implemented methods use File | Settings | File Templates.

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package io.ehdev.android.drivingtime.view;
+package io.ehdev.android.drivingtime.view.entry;
 
 import android.R;
 import android.content.Context;
@@ -31,7 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class DisplayRecordRow extends RelativeLayout {
+public class DisplayProgressRecordRow extends RelativeLayout {
 
     TextView rightText, leftText;
     ProgressBar progressBar;
@@ -52,7 +52,7 @@ public class DisplayRecordRow extends RelativeLayout {
         progressBar.setProgress((int)currentValue * 100);
     }
 
-    public DisplayRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p ) {
+    public DisplayProgressRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p) {
         super(context);
 
         setPadding(left_p, top_p, right_p, bottom_p);
@@ -127,7 +127,7 @@ public class DisplayRecordRow extends RelativeLayout {
         leftText.setId(2);
     }
 
-    public DisplayRecordRow(Context context){
+    public DisplayProgressRecordRow(Context context){
         this(context, 12, 3, 10, 3);
     }
 }

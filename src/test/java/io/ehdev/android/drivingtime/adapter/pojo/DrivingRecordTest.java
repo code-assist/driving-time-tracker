@@ -23,7 +23,7 @@
 package io.ehdev.android.drivingtime.adapter.pojo;
 
 import android.test.ActivityInstrumentationTestCase2;
-import io.ehdev.android.drivingtime.view.DisplayRecordRow;
+import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 public class DrivingRecordTest extends ActivityInstrumentationTestCase2 {
 
