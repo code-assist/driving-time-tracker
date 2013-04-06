@@ -28,11 +28,11 @@ import io.ehdev.android.drivingtime.view.DisplayRecordRow;
 public class DrivingRecordTest extends ActivityInstrumentationTestCase2 {
 
     public DrivingRecordTest(Class activityClass) {
-        super(DrivingRecord.class);
+        super(AggregatedDrivingRecord.class);
     }
 
     public void testOverflow(){
-        DrivingRecord drivingRecord = new DrivingRecord("123", 1f, 2f);
+        AggregatedDrivingRecord aggregatedDrivingRecord = new AggregatedDrivingRecord("123", 1f, 2f);
         DisplayRecordRow displayRecordRow = new DisplayRecordRow(null);
     }
 }

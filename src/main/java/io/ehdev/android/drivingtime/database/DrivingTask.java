@@ -22,5 +22,48 @@
 
 package io.ehdev.android.drivingtime.database;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName= DrivingTask.TableName)
 public class DrivingTask {
+
+    public final static String TableName = "drivingTask";
+
+    @DatabaseField(generatedId = true)
+    private int id;
+
+    @DatabaseField(canBeNull = false)
+    private String taskName;
+
+    @DatabaseField(canBeNull = false)
+    private Integer requiredHours;
+
+
+    protected DrivingTask() {}
+
+    public DrivingTask(String taskName, Integer requiredHours) {
+        this.taskName = taskName;
+        this.requiredHours = requiredHours;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Integer getRequiredHours() {
+        return requiredHours;
+    }
+
+    public void setRequiredHours(Integer requiredHours) {
+        this.requiredHours = requiredHours;
+    }
 }

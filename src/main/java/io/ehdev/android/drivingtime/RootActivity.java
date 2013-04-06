@@ -23,29 +23,23 @@
 package io.ehdev.android.drivingtime;
 
 import android.os.Bundle;
-import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockActivity;
-import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
-import io.ehdev.android.drivingtime.adapter.pojo.DrivingRecord;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import io.ehdev.android.drivingtime.fragments.MainFragment;
+import io.ehdev.android.drivingtime.fragments.TabListenerImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RootActivity extends SherlockActivity {
+public class RootActivity extends SherlockFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        //setContentView(R.layout.fragment_tabs);
         getSupportActionBar().setTitle("");
-
-        createTestDrivingRecords();
-    }
-
-    private void createTestDrivingRecords() {
-        List<DrivingRecord> drivingRecordList = new ArrayList<DrivingRecord>();
-        drivingRecordList.add(new DrivingRecord("Highway", 100f, 50f));
-        drivingRecordList.add(new DrivingRecord("Night", 10f, 7f));
-        ListView newListView = (ListView)findViewById(R.id.currentStatusView);
-        newListView.setAdapter(new DrivingRecordAdapter(this, drivingRecordList));
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().addTab(
+                getSupportActionBar()
+                        .newTab()
+                        .setTabListener(new TabListenerImpl<MainFragment>(this, MainFragment.class.getSimpleName(), MainFragment.class))
+                        .setText("Overview"));
     }
 }

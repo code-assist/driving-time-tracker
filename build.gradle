@@ -8,13 +8,16 @@ buildscript {
     }
 }
 
-apply plugin: 'android'
+//apply plugin: 'android'
 apply plugin: 'idea'
-//apply plugin: 'java'
+apply plugin: 'java'
 
+/*
+apply plugin: 'android'
 android {
     compileSdkVersion 17
 }
+*/
 
 repositories {
     mavenCentral()
@@ -24,4 +27,11 @@ repositories {
 dependencies{
     compile project(':libs:ActionBarSherlock')
     compile 'com.j256.ormlite:ormlite-android:4.44'
+    compile 'joda-time:joda-time:2.2'
+}
+
+
+task copyToLib(type: Copy) {
+    into "jars"
+    from configurations.runtime
 }

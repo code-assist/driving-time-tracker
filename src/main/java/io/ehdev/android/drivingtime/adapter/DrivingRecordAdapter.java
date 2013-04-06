@@ -26,7 +26,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import io.ehdev.android.drivingtime.adapter.pojo.DrivingRecord;
+import io.ehdev.android.drivingtime.adapter.pojo.AggregatedDrivingRecord;
 import io.ehdev.android.drivingtime.view.DisplayRecordRow;
 
 import java.util.List;
@@ -34,9 +34,9 @@ import java.util.List;
 public class DrivingRecordAdapter extends BaseAdapter {
 
     private Context viewContext;
-    private List<DrivingRecord> recordList;
+    private List<AggregatedDrivingRecord> recordList;
 
-    public DrivingRecordAdapter(Context viewContext, List<DrivingRecord> recordList){
+    public DrivingRecordAdapter(Context viewContext, List<AggregatedDrivingRecord> recordList){
         this.viewContext = viewContext;
         this.recordList = recordList;
     }

@@ -23,7 +23,7 @@
 
 <resources>
     <string name="app_name">DrivingTimeReport</string>
-    <string name="drivingRecord">Driving Record</string>
+    <string name="aggregatedDrivingRecord">Driving Record</string>
     <string name="addTrip">Add Trip</string>
 
     <string name="addRecord">Add Record</string>

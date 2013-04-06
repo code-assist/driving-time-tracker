@@ -24,13 +24,13 @@ package io.ehdev.android.drivingtime.adapter.pojo;
 
 import io.ehdev.android.drivingtime.view.DisplayRecordRow;
 
-public class DrivingRecord {
+public class AggregatedDrivingRecord {
 
     private String recordTitle;
     private float requiredHours;
     private float loggedHours;
 
-    public DrivingRecord( String recordTitle, float requiredHours, float loggedHours ){
+    public AggregatedDrivingRecord(String recordTitle, float requiredHours, float loggedHours){
         this.recordTitle = recordTitle;
         this.requiredHours = requiredHours;
         this.loggedHours = loggedHours;
