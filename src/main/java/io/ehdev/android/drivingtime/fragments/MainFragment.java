@@ -10,18 +10,21 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
-import io.ehdev.android.drivingtime.adapter.pojo.AggregatedDrivingRecord;
+import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
+import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
+import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainFragment extends SherlockFragment {
+
+    private DrivingTaskDao drivingTaskDao;
+    private DrivingRecordDao drivingRecordDao;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Log.d(MainFragment.class.getSimpleName(), "onCreateView");
+        Log.d(MainFragment.class.getName(), "onCreateView");
+        setupDAOs();
         View view = inflater.inflate(R.layout.main, null);
         showEntryDialogFromButtonClick(view);
         createTestDrivingRecords(view);
@@ -40,11 +43,17 @@ public class MainFragment extends SherlockFragment {
         });
     }
 
+    private void updateUi() {
+    }
+
+    private void setupDAOs() {
+        drivingTaskDao = new DrivingTaskDao(getSherlockActivity());
+        drivingRecordDao = new DrivingRecordDao(getSherlockActivity());
+    }
+
     private void createTestDrivingRecords(View view) {
-        List<AggregatedDrivingRecord> aggregatedDrivingRecordList = new ArrayList<AggregatedDrivingRecord>();
-        aggregatedDrivingRecordList.add(new AggregatedDrivingRecord("Highway", 100f, 50f));
-        aggregatedDrivingRecordList.add(new AggregatedDrivingRecord("Night", 10f, 7f));
         ListView newListView = (ListView)view.findViewById(R.id.currentStatusView);
-        newListView.setAdapter(new DrivingRecordAdapter(getSherlockActivity(), aggregatedDrivingRecordList));
+        AggregatedDrivingRecordDAO aggregatedDrivingRecordDAO = new AggregatedDrivingRecordDAO(drivingRecordDao, drivingTaskDao);
+        newListView.setAdapter(new DrivingRecordAdapter(getSherlockActivity(), aggregatedDrivingRecordDAO.createDrivingRecordList()));
     }
 }

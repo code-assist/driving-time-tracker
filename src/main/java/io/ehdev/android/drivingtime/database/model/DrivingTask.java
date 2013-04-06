@@ -20,10 +20,12 @@
  * THE SOFTWARE.
  */
 
-package io.ehdev.android.drivingtime.database;
+package io.ehdev.android.drivingtime.database.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import org.joda.time.Duration;
 
 @DatabaseTable(tableName= DrivingTask.TableName)
 public class DrivingTask {
@@ -36,13 +38,13 @@ public class DrivingTask {
     @DatabaseField(canBeNull = false)
     private String taskName;
 
-    @DatabaseField(canBeNull = false)
-    private Integer requiredHours;
+    @DatabaseField(canBeNull = false, dataType= DataType.SERIALIZABLE)
+    private Duration requiredHours;
 
 
     protected DrivingTask() {}
 
-    public DrivingTask(String taskName, Integer requiredHours) {
+    public DrivingTask(String taskName, Duration requiredHours) {
         this.taskName = taskName;
         this.requiredHours = requiredHours;
     }
@@ -59,11 +61,11 @@ public class DrivingTask {
         this.taskName = taskName;
     }
 
-    public Integer getRequiredHours() {
+    public Duration getRequiredHours() {
         return requiredHours;
     }
 
-    public void setRequiredHours(Integer requiredHours) {
+    public void setRequiredHours(Duration requiredHours) {
         this.requiredHours = requiredHours;
     }
 }

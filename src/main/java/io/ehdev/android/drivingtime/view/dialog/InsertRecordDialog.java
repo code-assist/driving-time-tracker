@@ -38,9 +38,10 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import io.ehdev.android.drivingtime.R;
-import io.ehdev.android.drivingtime.database.DrivingRecord;
-import io.ehdev.android.drivingtime.database.DrivingTask;
+import io.ehdev.android.drivingtime.database.model.DrivingRecord;
+import io.ehdev.android.drivingtime.database.model.DrivingTask;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 public class InsertRecordDialog extends SherlockDialogFragment {
 
@@ -80,7 +81,7 @@ public class InsertRecordDialog extends SherlockDialogFragment {
                 Dialog thisDialog = InsertRecordDialog.this.getDialog();
                 DrivingTask task = (DrivingTask) ((Spinner) thisDialog.findViewById(R.id.drivingTypeSpinner)).getSelectedItem();
                 Long durationOfEntry = getDurationOfEntry(thisDialog);
-                new DrivingRecord(task, dateTimeForEntry, durationOfEntry);
+                new DrivingRecord(task, dateTimeForEntry, new Duration(durationOfEntry));
                 //TODO: add entry to DB
 
                 thisDialog.dismiss();

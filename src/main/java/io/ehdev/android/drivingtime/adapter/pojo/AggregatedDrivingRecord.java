@@ -23,14 +23,15 @@
 package io.ehdev.android.drivingtime.adapter.pojo;
 
 import io.ehdev.android.drivingtime.view.DisplayRecordRow;
+import org.joda.time.Duration;
 
 public class AggregatedDrivingRecord {
 
     private String recordTitle;
-    private float requiredHours;
-    private float loggedHours;
+    private Duration requiredHours;
+    private Duration loggedHours;
 
-    public AggregatedDrivingRecord(String recordTitle, float requiredHours, float loggedHours){
+    public AggregatedDrivingRecord(String recordTitle, Duration requiredHours, Duration loggedHours){
         this.recordTitle = recordTitle;
         this.requiredHours = requiredHours;
         this.loggedHours = loggedHours;
@@ -40,12 +41,12 @@ public class AggregatedDrivingRecord {
         return recordTitle;
     }
 
-    public float getRequiredHours() {
-        return requiredHours;
+    public long getRequiredHours() {
+        return requiredHours.getStandardHours();
     }
 
-    public float getLoggedHours() {
-        return loggedHours;
+    public long getLoggedHours() {
+        return loggedHours.getStandardHours();
     }
 
     public void setView(DisplayRecordRow record){
