@@ -22,25 +22,34 @@
 
 package io.ehdev.android.drivingtime.view;
 
+import android.R;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class DisplayRecordRow extends RelativeLayout {
 
-    TextView rightText, leftText, centerText;
+    TextView rightText, leftText;
+    ProgressBar progressBar;
 
-    public TextView left(){
+    public TextView getLeftText(){
         return leftText;
     }
 
-    public TextView right(){
+    public TextView getRightText(){
         return rightText;
     }
 
-    public TextView center(){
-        return centerText;
+    public void setMaxOfProgress(float maxValue){
+        progressBar.setMax((int)maxValue * 100);
+    }
+
+    public void setCurrentProgress(float currentValue){
+        progressBar.setProgress((int)currentValue * 100);
     }
 
     public DisplayRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p ) {
@@ -48,26 +57,26 @@ public class DisplayRecordRow extends RelativeLayout {
 
         setPadding(left_p, top_p, right_p, bottom_p);
 
+        createProgressBar(context);
         createLeftText(context);
         createRightText(context);
-        createCenterText(context);
 
         //Set up the relitive layout
         createLeftLayout();
-        createCenterLayout();
         createRightLayout();
-
-
+        createProgressBarLayout();
     }
 
-    private void createCenterLayout() {
-        LayoutParams center =
-                new LayoutParams(LayoutParams.WRAP_CONTENT,
-                        LayoutParams.WRAP_CONTENT);
+    private void createProgressBarLayout() {
+        LayoutParams progressBarLayout =
+                new LayoutParams(LayoutParams.MATCH_PARENT,
+                        100);
 
-        center.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        center.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        addView(centerText, center);
+        Log.i(this.getClass().getSimpleName(), "ID: " + leftText.getId());
+
+        progressBarLayout.addRule(RelativeLayout.BELOW, leftText.getId());
+        progressBarLayout.addRule(RelativeLayout.BELOW, rightText.getId());
+        addView(progressBar, progressBarLayout);
     }
 
     private void createLeftLayout() {
@@ -87,15 +96,19 @@ public class DisplayRecordRow extends RelativeLayout {
 
         right.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         right.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        //right.addRule(RelativeLayout.RIGHT_OF, leftText.getId());
         addView(rightText, right);
     }
 
-    private void createCenterText(Context context) {
-        centerText = new TextView(context);
-        centerText.setText("");
-        centerText.setTextSize(18);
-        centerText.setTextColor(Color.BLACK);
+
+    private void createProgressBar(Context context) {
+        int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                (float) 100, getResources().getDisplayMetrics());
+        progressBar = new ProgressBar(context, null, R.attr.progressBarStyleHorizontal);
+        progressBar.setPadding(10, 15, 10, 15);
+        progressBar.setMax(100);
+        progressBar.setProgress(50);
+        progressBar.setMinimumHeight(value);
+        progressBar.setMinimumWidth(value);
     }
 
     private void createRightText(Context context) {
@@ -103,6 +116,7 @@ public class DisplayRecordRow extends RelativeLayout {
         rightText.setText("left");
         rightText.setTextSize(18);
         rightText.setTextColor(Color.BLACK);
+        rightText.setId(1);
     }
 
     private void createLeftText(Context context) {
@@ -110,9 +124,10 @@ public class DisplayRecordRow extends RelativeLayout {
         leftText.setText("right");
         leftText.setTextSize(18);
         leftText.setTextColor(Color.BLACK);
+        leftText.setId(2);
     }
 
     public DisplayRecordRow(Context context){
-        this(context, 10, 3, 10, 3);
+        this(context, 12, 3, 10, 3);
     }
 }

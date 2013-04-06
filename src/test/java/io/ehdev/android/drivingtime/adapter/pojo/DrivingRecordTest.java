@@ -20,32 +20,19 @@
  * THE SOFTWARE.
  */
 
-package io.ehdev.android.drivingtime;
+package io.ehdev.android.drivingtime.adapter.pojo;
 
-import android.os.Bundle;
-import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockActivity;
-import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
-import io.ehdev.android.drivingtime.adapter.pojo.DrivingRecord;
+import android.test.ActivityInstrumentationTestCase2;
+import io.ehdev.android.drivingtime.view.DisplayRecordRow;
 
-import java.util.ArrayList;
-import java.util.List;
+public class DrivingRecordTest extends ActivityInstrumentationTestCase2 {
 
-public class RootActivity extends SherlockActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        getSupportActionBar().setTitle("");
-
-        createTestDrivingRecords();
+    public DrivingRecordTest(Class activityClass) {
+        super(DrivingRecord.class);
     }
 
-    private void createTestDrivingRecords() {
-        List<DrivingRecord> drivingRecordList = new ArrayList<DrivingRecord>();
-        drivingRecordList.add(new DrivingRecord("Highway", 100f, 50f));
-        drivingRecordList.add(new DrivingRecord("Night", 10f, 7f));
-        ListView newListView = (ListView)findViewById(R.id.currentStatusView);
-        newListView.setAdapter(new DrivingRecordAdapter(this, drivingRecordList));
+    public void testOverflow(){
+        DrivingRecord drivingRecord = new DrivingRecord("123", 1f, 2f);
+        DisplayRecordRow displayRecordRow = new DisplayRecordRow(null);
     }
 }

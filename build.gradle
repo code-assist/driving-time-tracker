@@ -9,6 +9,8 @@ buildscript {
 }
 
 apply plugin: 'android'
+apply plugin: 'idea'
+//apply plugin: 'java'
 
 android {
     compileSdkVersion 17
@@ -21,4 +23,5 @@ repositories {
 
 dependencies{
     compile project(':libs:ActionBarSherlock')
+    compile 'com.j256.ormlite:ormlite-android:4.44'
 }

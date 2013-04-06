@@ -60,6 +60,9 @@ public class DrivingRecordAdapter extends BaseAdapter {
         if(null == view || !(view instanceof DisplayRecordRow))
             view = new DisplayRecordRow(viewContext);
 
+        DisplayRecordRow displayRecordRow = (DisplayRecordRow) view;
+        recordList.get(i).setView(displayRecordRow);
+
         return view;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

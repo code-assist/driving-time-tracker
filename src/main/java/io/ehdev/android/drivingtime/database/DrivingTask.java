@@ -20,32 +20,7 @@
  * THE SOFTWARE.
  */
 
-package io.ehdev.android.drivingtime;
+package io.ehdev.android.drivingtime.database;
 
-import android.os.Bundle;
-import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockActivity;
-import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
-import io.ehdev.android.drivingtime.adapter.pojo.DrivingRecord;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class RootActivity extends SherlockActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        getSupportActionBar().setTitle("");
-
-        createTestDrivingRecords();
-    }
-
-    private void createTestDrivingRecords() {
-        List<DrivingRecord> drivingRecordList = new ArrayList<DrivingRecord>();
-        drivingRecordList.add(new DrivingRecord("Highway", 100f, 50f));
-        drivingRecordList.add(new DrivingRecord("Night", 10f, 7f));
-        ListView newListView = (ListView)findViewById(R.id.currentStatusView);
-        newListView.setAdapter(new DrivingRecordAdapter(this, drivingRecordList));
-    }
+public class DrivingTask {
 }

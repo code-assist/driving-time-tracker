@@ -22,6 +22,8 @@
 
 package io.ehdev.android.drivingtime.adapter.pojo;
 
+import io.ehdev.android.drivingtime.view.DisplayRecordRow;
+
 public class DrivingRecord {
 
     private String recordTitle;
@@ -44,5 +46,25 @@ public class DrivingRecord {
 
     public float getLoggedHours() {
         return loggedHours;
+    }
+
+    public void setView(DisplayRecordRow record){
+        setProgressBar(record);
+        setTextField(record);
+    }
+
+    private void setTextField(DisplayRecordRow record) {
+        record.getLeftText().setText(getRecordTitle());
+        String percentageDriven = String.format("%d%%", (int)(100 * getLoggedHours() / getRequiredHours()));
+        record.getRightText().setText(percentageDriven);
+    }
+
+    private void setProgressBar(DisplayRecordRow record) {
+        record.setMaxOfProgress(getRequiredHours());
+
+        if(getRequiredHours() <= getLoggedHours() )
+            record.setCurrentProgress(getRequiredHours());
+        else
+            record.setCurrentProgress(getLoggedHours());
     }
 }

@@ -21,28 +21,33 @@
   ~ THE SOFTWARE.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
+              android:layout_height="fill_parent" >
 
-    <Button
-            android:id="@+id/addTimeToLog"
-            android:text="@string/addTrip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/drivingRecord"
             android:textSize="20dip"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:id="@+id/drivingRecordTitle"/>
+
+    <Button
+            android:id="@+id/addTimeToLog"
+            android:text="@string/addTrip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
 
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/currentStatusView" />s
+            android:id="@+id/currentStatusView"
+            android:layout_below="@id/drivingRecordTitle"
+            android:layout_above="@id/addTimeToLog"/>
 
-</LinearLayout>
+</RelativeLayout>
 
