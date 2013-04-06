@@ -47,4 +47,12 @@ public class AggregatedDrivingRecordDAO {
                             totalDuration));
         }
     }
+
+    public DrivingRecordDao getDrivingRecordDao() {
+        return drivingRecordDao;
+    }
+
+    public DrivingTaskDao getDrivingTaskDao() {
+        return drivingTaskDao;
+    }
 }

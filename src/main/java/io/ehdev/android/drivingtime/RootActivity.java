@@ -31,8 +31,8 @@ import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 import io.ehdev.android.drivingtime.database.model.DrivingTask;
-import io.ehdev.android.drivingtime.fragments.MainFragment;
-import io.ehdev.android.drivingtime.fragments.TabListenerImpl;
+import io.ehdev.android.drivingtime.view.fragments.MainFragment;
+import io.ehdev.android.drivingtime.view.fragments.TabListenerImpl;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 

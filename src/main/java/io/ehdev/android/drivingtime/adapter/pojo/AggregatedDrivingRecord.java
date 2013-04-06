@@ -56,7 +56,12 @@ public class AggregatedDrivingRecord {
 
     private void setTextField(DisplayRecordRow record) {
         record.getLeftText().setText(getRecordTitle());
-        String percentageDriven = String.format("%d%%", (int)(100 * getLoggedHours() / getRequiredHours()));
+        String percentageDriven;
+        if(getLoggedHours() / getRequiredHours() >= 1)
+            percentageDriven = String.format("100%%");
+        else
+            percentageDriven = String.format("%d%%", (int)(100 * getLoggedHours() / getRequiredHours()));
+
         record.getRightText().setText(percentageDriven);
     }
 

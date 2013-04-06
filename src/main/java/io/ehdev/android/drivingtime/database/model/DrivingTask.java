@@ -68,4 +68,8 @@ public class DrivingTask {
     public void setRequiredHours(Duration requiredHours) {
         this.requiredHours = requiredHours;
     }
+
+    public String toString(){
+        return taskName;
+    }
 }

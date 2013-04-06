@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.ehdev.android.drivingtime.fragments;
+package io.ehdev.android.drivingtime.view.fragments;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;

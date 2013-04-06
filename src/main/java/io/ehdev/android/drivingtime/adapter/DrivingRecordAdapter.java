@@ -55,6 +55,11 @@ public class DrivingRecordAdapter extends BaseAdapter {
         return i;
     }
 
+    public void setAggregatedDrivingRecord(List<AggregatedDrivingRecord> recordList){
+        this.recordList = recordList;
+        notifyDataSetInvalidated();
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(null == view || !(view instanceof DisplayRecordRow))

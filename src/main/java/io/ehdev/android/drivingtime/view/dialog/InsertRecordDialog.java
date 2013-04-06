@@ -32,26 +32,38 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Spinner;
-import android.widget.TimePicker;
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import io.ehdev.android.drivingtime.R;
+import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
+import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 import io.ehdev.android.drivingtime.database.model.DrivingTask;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import java.util.List;
+
 public class InsertRecordDialog extends SherlockDialogFragment {
 
     private static final String TAG = InsertRecordDialog.class.getSimpleName();
 
+    private DrivingRecord drivingRecord;
+    private AggregatedDrivingRecordDAO dao;
+    private DrivingRecordAdapter drivingRecordAdapter;
     private DateTime dateTimeForEntry;
+    private List<DrivingTask> drivingTaskList;
+
+    public InsertRecordDialog(DrivingRecord drivingRecord, List<DrivingTask> drivingTaskList, AggregatedDrivingRecordDAO dao, DrivingRecordAdapter drivingRecordAdapter) {
+        this.drivingRecord = drivingRecord;
+        this.dao = dao;
+        this.drivingRecordAdapter = drivingRecordAdapter;
+        dateTimeForEntry = drivingRecord.getStartTime();
+        this.drivingTaskList = drivingTaskList;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceDialog){
-        dateTimeForEntry = new DateTime();
         AlertDialog.Builder builder = createDialogAddButtons();
         builder.setTitle("Add Driving Time");
         return builder.create();
@@ -81,8 +93,17 @@ public class InsertRecordDialog extends SherlockDialogFragment {
                 Dialog thisDialog = InsertRecordDialog.this.getDialog();
                 DrivingTask task = (DrivingTask) ((Spinner) thisDialog.findViewById(R.id.drivingTypeSpinner)).getSelectedItem();
                 Long durationOfEntry = getDurationOfEntry(thisDialog);
-                new DrivingRecord(task, dateTimeForEntry, new Duration(durationOfEntry));
+                drivingRecord.setDrivingTask(task);
+                drivingRecord.setStartTime(dateTimeForEntry);
+                drivingRecord.setDurationOfDriving(new Duration(durationOfEntry));
+                try{
+                    dao.getDrivingRecordDao().getDao().createOrUpdate(drivingRecord);
+                } catch (Exception e) {
+                    Log.i(TAG, e.getMessage());
+                }
                 //TODO: add entry to DB
+
+                drivingRecordAdapter.setAggregatedDrivingRecord(dao.createDrivingRecordList());
 
                 thisDialog.dismiss();
             }
@@ -91,17 +112,32 @@ public class InsertRecordDialog extends SherlockDialogFragment {
 
     private Long getDurationOfEntry(Dialog thisDialog) {
         TimePicker timePicker = ((TimePicker)thisDialog.findViewById(R.id.durationPicker));
-        return (long)timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute();
+        return (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute()) * 60 * 1000L;
     }
 
     private AlertDialog.Builder createDialogBuilder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View v = setupView();
+        builder.setView(v);
+        return builder;
+    }
+
+    private View setupView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.insert_record_dialog, null);
         setCurrentDateTime(v);
         setTimeViewParameters(v);
-        builder.setView(v);
-        return builder;
+        setSpinnerAdapter(v);
+        return v;
+    }
+
+    private void setSpinnerAdapter(View v) {
+        ArrayAdapter arrayAdapter =
+                new ArrayAdapter<DrivingTask>(
+                        getSherlockActivity(),
+                        android.R.layout.simple_spinner_item,
+                        drivingTaskList);
+        ((Spinner)v.findViewById(R.id.drivingTypeSpinner)).setAdapter(arrayAdapter);
     }
 
     private void setCurrentDateTime(View v) {
