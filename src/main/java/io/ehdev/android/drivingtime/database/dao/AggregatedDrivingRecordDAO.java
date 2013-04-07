@@ -42,8 +42,7 @@ public class AggregatedDrivingRecordDAO {
             }
             aggregatedDrivingRecordList.add(
                     new AggregatedDrivingRecord(
-                            drivingTask.getTaskName(),
-                            drivingTask.getRequiredHours(),
+                            drivingTask,
                             totalDuration));
         }
     }

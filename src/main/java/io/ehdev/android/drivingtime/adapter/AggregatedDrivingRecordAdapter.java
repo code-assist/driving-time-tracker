@@ -46,7 +46,7 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public AggregatedDrivingRecord getItem(int i) {
         return recordList.get(i);
     }
 

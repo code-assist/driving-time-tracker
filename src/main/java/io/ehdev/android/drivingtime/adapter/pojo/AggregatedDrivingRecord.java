@@ -22,27 +22,30 @@
 
 package io.ehdev.android.drivingtime.adapter.pojo;
 
+import io.ehdev.android.drivingtime.database.model.DrivingTask;
 import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 import org.joda.time.Duration;
 
 public class AggregatedDrivingRecord {
 
-    private String recordTitle;
-    private Duration requiredHours;
+    private DrivingTask recordTitle;
     private Duration loggedHours;
 
-    public AggregatedDrivingRecord(String recordTitle, Duration requiredHours, Duration loggedHours){
+    public AggregatedDrivingRecord(DrivingTask recordTitle, Duration loggedHours){
         this.recordTitle = recordTitle;
-        this.requiredHours = requiredHours;
         this.loggedHours = loggedHours;
     }
 
     public String getRecordTitle() {
-        return recordTitle;
+        return recordTitle.getTaskName();
+    }
+
+    public int getDrivingTaskId(){
+        return recordTitle.getId();
     }
 
     public long getRequiredHours() {
-        return requiredHours.getStandardHours();
+        return recordTitle.getRequiredHours().getStandardHours();
     }
 
     public long getLoggedHours() {

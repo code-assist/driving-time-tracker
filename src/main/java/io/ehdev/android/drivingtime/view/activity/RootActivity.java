@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package io.ehdev.android.drivingtime;
+package io.ehdev.android.drivingtime.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

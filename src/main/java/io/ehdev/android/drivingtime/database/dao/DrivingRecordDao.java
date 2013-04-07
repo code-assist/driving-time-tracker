@@ -3,11 +3,16 @@ package io.ehdev.android.drivingtime.database.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrivingRecordDao extends DatabaseHelper<DrivingRecord> {
 
@@ -33,5 +38,14 @@ public class DrivingRecordDao extends DatabaseHelper<DrivingRecord> {
 
     public void addDrivingRecord(DrivingRecord drivingRecord) throws SQLException {
         getDao().createIfNotExists(drivingRecord);
+    }
+
+    public List<DrivingRecord> getDrivingRecordForTask(int taskId) throws SQLException {
+        QueryBuilder<DrivingRecord, Integer> qb = getDao().queryBuilder();
+        Where where = qb.where();
+        where.eq(DrivingRecord.DRIVING_TASK_COLUMN_NAME, taskId);
+        PreparedQuery<DrivingRecord> pq = where.prepare();
+        List<DrivingRecord> drivingRecordList = getDao().query(pq);
+        return new ArrayList<DrivingRecord>(drivingRecordList);
     }
 }

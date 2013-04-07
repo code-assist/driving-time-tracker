@@ -1,11 +1,13 @@
 package io.ehdev.android.drivingtime.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -16,6 +18,7 @@ import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 import io.ehdev.android.drivingtime.database.model.DrivingTask;
+import io.ehdev.android.drivingtime.view.activity.ListEntriesForTask;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -76,5 +79,15 @@ public class MainFragment extends SherlockFragment {
         aggregatedDrivingRecordDAO = new AggregatedDrivingRecordDAO(drivingRecordDao, drivingTaskDao);
         aggregatedDrivingRecordAdapter = new AggregatedDrivingRecordAdapter(getSherlockActivity(), aggregatedDrivingRecordDAO.createDrivingRecordList());
         newListView.setAdapter(aggregatedDrivingRecordAdapter);
+        newListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "OnClick");
+                Intent newActivity = new Intent();
+                newActivity.setClass(getSherlockActivity(), ListEntriesForTask.class);
+                newActivity.putExtra("taskId", aggregatedDrivingRecordAdapter.getItem(position).getDrivingTaskId());
+                getSherlockActivity().startActivity(newActivity);
+            }
+        });
     }
 }
