@@ -23,6 +23,8 @@
 package io.ehdev.android.drivingtime;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -31,34 +33,51 @@ import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 import io.ehdev.android.drivingtime.database.model.DrivingTask;
+import io.ehdev.android.drivingtime.view.fragments.ListDrivingRecordsFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
-import io.ehdev.android.drivingtime.view.fragments.TabListenerImpl;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import java.sql.SQLException;
 
-public class RootActivity extends SherlockFragmentActivity {
+public class RootActivity extends SherlockFragmentActivity implements ActionBar.TabListener {
 
     private DrivingTaskDao drivingTaskDao;
     private DrivingRecordDao drivingRecordDao;
+    static private Fragment listOfFragments[];
 
     private static final String TAG = RootActivity.class.getName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            setupTempDatabase();
 
-        setupTempDatabase();
+            listOfFragments = new Fragment[]{
+                    new MainFragment(),
+                    new ListDrivingRecordsFragment()
+            };
+        }
 
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().addTab(
                 getSupportActionBar()
                         .newTab()
-                        .setTabListener(new TabListenerImpl<MainFragment>(this, MainFragment.class.getSimpleName(), MainFragment.class))
+                        .setTabListener(this)
                         .setText("Overview"));
+
+        getSupportActionBar().addTab(
+                getSupportActionBar()
+                        .newTab()
+                        .setTabListener(this)
+                        .setText("Review Entries"));
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        if(savedInstanceState != null){
+            getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab"));
+        }
     }
 
     private void setupTempDatabase() {
@@ -90,4 +109,18 @@ public class RootActivity extends SherlockFragmentActivity {
         drivingRecordDao.getDao().create(drivingRecord2);
     }
 
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        if(listOfFragments[tab.getPosition()].isDetached())
+            ft.attach(listOfFragments[tab.getPosition()]);
+        else
+            ft.replace(android.R.id.content, listOfFragments[tab.getPosition()]);
+    }
+
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        ft.remove(listOfFragments[tab.getPosition()]);
+    }
+
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        // User selected the already selected tab. Usually do nothing.
+    }
 }

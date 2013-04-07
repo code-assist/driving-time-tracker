@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import io.ehdev.android.drivingtime.R;
-import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
+import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
 import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
@@ -27,7 +27,7 @@ public class MainFragment extends SherlockFragment {
 
     private DrivingTaskDao drivingTaskDao;
     private DrivingRecordDao drivingRecordDao;
-    private DrivingRecordAdapter drivingRecordAdapter;
+    private AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter;
     private AggregatedDrivingRecordDAO aggregatedDrivingRecordDAO;
 
     private static final String TAG = MainFragment.class.getName();
@@ -39,7 +39,7 @@ public class MainFragment extends SherlockFragment {
         setupDAOs();
         View view = inflater.inflate(R.layout.main, null);
         showEntryDialogFromButtonClick(view);
-        createTestDrivingRecords(view);
+        addAdapterToListView(view);
         return view;
 
     }
@@ -48,20 +48,20 @@ public class MainFragment extends SherlockFragment {
         (view.findViewById(R.id.addTimeToLog)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
                     FragmentManager fm = getChildFragmentManager();
                     InsertRecordDialog insertRecordDialog = getInsertRecordDialog();
                     insertRecordDialog.show(fm, "Insert Record Dialog");
-                } catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getSherlockActivity(), "Unable to create view", Toast.LENGTH_LONG);
                     Log.i(TAG, e.getMessage());
                 }
             }
 
             private InsertRecordDialog getInsertRecordDialog() throws SQLException {
-                List<DrivingTask> drivingTaskList = drivingTaskDao.getDao ().queryForAll();
+                List<DrivingTask> drivingTaskList = drivingTaskDao.getDao().queryForAll();
                 DrivingRecord drivingRecord = new DrivingRecord(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
-                return new InsertRecordDialog(drivingRecord, drivingTaskList, aggregatedDrivingRecordDAO, drivingRecordAdapter);
+                return new InsertRecordDialog(drivingRecord, drivingTaskList, aggregatedDrivingRecordDAO, aggregatedDrivingRecordAdapter);
             }
         });
     }
@@ -71,10 +71,10 @@ public class MainFragment extends SherlockFragment {
         drivingRecordDao = new DrivingRecordDao(getSherlockActivity());
     }
 
-    private void createTestDrivingRecords(View view) {
+    private void addAdapterToListView(View view) {
         ListView newListView = (ListView)view.findViewById(R.id.currentStatusView);
         aggregatedDrivingRecordDAO = new AggregatedDrivingRecordDAO(drivingRecordDao, drivingTaskDao);
-        drivingRecordAdapter = new DrivingRecordAdapter(getSherlockActivity(), aggregatedDrivingRecordDAO.createDrivingRecordList());
-        newListView.setAdapter(drivingRecordAdapter);
+        aggregatedDrivingRecordAdapter = new AggregatedDrivingRecordAdapter(getSherlockActivity(), aggregatedDrivingRecordDAO.createDrivingRecordList());
+        newListView.setAdapter(aggregatedDrivingRecordAdapter);
     }
 }

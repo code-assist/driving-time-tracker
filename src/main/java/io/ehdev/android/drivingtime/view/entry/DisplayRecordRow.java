@@ -22,61 +22,26 @@
 
 package io.ehdev.android.drivingtime.view.entry;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
-import android.util.TypedValue;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class DisplayRecordRow extends RelativeLayout {
 
-    TextView rightText, leftText;
-    ProgressBar progressBar;
-
-    public TextView getLeftText(){
-        return leftText;
-    }
-
-    public TextView getRightText(){
-        return rightText;
-    }
-
-    public void setMaxOfProgress(float maxValue){
-        progressBar.setMax((int)maxValue * 100);
-    }
-
-    public void setCurrentProgress(float currentValue){
-        progressBar.setProgress((int)currentValue * 100);
-    }
+    private TextView rightText, leftText;
 
     public DisplayRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p ) {
         super(context);
 
         setPadding(left_p, top_p, right_p, bottom_p);
 
-        createProgressBar(context);
         createLeftText(context);
         createRightText(context);
 
         //Set up the relitive layout
         createLeftLayout();
         createRightLayout();
-        createProgressBarLayout();
-    }
-
-    private void createProgressBarLayout() {
-        LayoutParams progressBarLayout =
-                new LayoutParams(LayoutParams.MATCH_PARENT,
-                        100);
-
-        Log.i(this.getClass().getSimpleName(), "ID: " + leftText.getId());
-
-        progressBarLayout.addRule(RelativeLayout.BELOW, leftText.getId());
-        progressBarLayout.addRule(RelativeLayout.BELOW, rightText.getId());
-        addView(progressBar, progressBarLayout);
     }
 
     private void createLeftLayout() {
@@ -99,18 +64,6 @@ public class DisplayRecordRow extends RelativeLayout {
         addView(rightText, right);
     }
 
-
-    private void createProgressBar(Context context) {
-        int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                (float) 100, getResources().getDisplayMetrics());
-        progressBar = new ProgressBar(context, null, R.attr.progressBarStyleHorizontal);
-        progressBar.setPadding(10, 15, 10, 15);
-        progressBar.setMax(100);
-        progressBar.setProgress(50);
-        progressBar.setMinimumHeight(value);
-        progressBar.setMinimumWidth(value);
-    }
-
     private void createRightText(Context context) {
         rightText = new TextView(context);
         rightText.setText("left");
@@ -125,6 +78,14 @@ public class DisplayRecordRow extends RelativeLayout {
         leftText.setTextSize(18);
         leftText.setTextColor(Color.BLACK);
         leftText.setId(2);
+    }
+
+    public void setRightText(String text){
+        rightText.setText(text);
+    }
+
+    public void setLeftText(String text){
+        leftText.setText(text);
     }
 
     public DisplayRecordRow(Context context){

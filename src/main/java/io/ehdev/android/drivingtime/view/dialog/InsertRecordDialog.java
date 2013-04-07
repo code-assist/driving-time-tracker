@@ -35,7 +35,7 @@ import android.view.View;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import io.ehdev.android.drivingtime.R;
-import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
+import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
 import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 import io.ehdev.android.drivingtime.database.model.DrivingTask;
@@ -50,14 +50,14 @@ public class InsertRecordDialog extends SherlockDialogFragment {
 
     private DrivingRecord drivingRecord;
     private AggregatedDrivingRecordDAO dao;
-    private DrivingRecordAdapter drivingRecordAdapter;
+    private AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter;
     private DateTime dateTimeForEntry;
     private List<DrivingTask> drivingTaskList;
 
-    public InsertRecordDialog(DrivingRecord drivingRecord, List<DrivingTask> drivingTaskList, AggregatedDrivingRecordDAO dao, DrivingRecordAdapter drivingRecordAdapter) {
+    public InsertRecordDialog(DrivingRecord drivingRecord, List<DrivingTask> drivingTaskList, AggregatedDrivingRecordDAO dao, AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter) {
         this.drivingRecord = drivingRecord;
         this.dao = dao;
-        this.drivingRecordAdapter = drivingRecordAdapter;
+        this.aggregatedDrivingRecordAdapter = aggregatedDrivingRecordAdapter;
         dateTimeForEntry = drivingRecord.getStartTime();
         this.drivingTaskList = drivingTaskList;
     }
@@ -103,7 +103,7 @@ public class InsertRecordDialog extends SherlockDialogFragment {
                 }
                 //TODO: add entry to DB
 
-                drivingRecordAdapter.setAggregatedDrivingRecord(dao.createDrivingRecordList());
+                aggregatedDrivingRecordAdapter.setAggregatedDrivingRecord(dao.createDrivingRecordList());
 
                 thisDialog.dismiss();
             }

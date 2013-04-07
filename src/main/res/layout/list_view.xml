@@ -38,7 +38,7 @@
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/currentStatusView"
+            android:id="@+id/listOfAllRecords"
             android:layout_below="@id/drivingRecordTitle"
             android:layout_alignParentBottom="true"/>
 
