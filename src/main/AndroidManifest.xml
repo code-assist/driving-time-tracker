@@ -42,7 +42,7 @@
         </activity>
 
         <activity
-            android:name=".view.activity.ListEntriesForTask"
+            android:name=".view.activity.ListEntriesForTaskActivity"
             android:theme="@android:style/Theme.Holo.Light" />
     </application>
 </manifest>

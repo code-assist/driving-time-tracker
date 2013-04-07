@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListEntriesForTask extends SherlockFragmentActivity {
-    public static final String TAG = ListEntriesForTask.class.getName();
+public class ListEntriesForTaskActivity extends SherlockFragmentActivity {
+    public static final String TAG = ListEntriesForTaskActivity.class.getName();
     private DrivingRecordDao drivingRecordDao;
     private DrivingRecordAdapter drivingRecordAdapter;
     

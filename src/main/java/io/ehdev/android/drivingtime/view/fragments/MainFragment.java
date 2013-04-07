@@ -18,7 +18,7 @@ import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 import io.ehdev.android.drivingtime.database.model.DrivingTask;
-import io.ehdev.android.drivingtime.view.activity.ListEntriesForTask;
+import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -84,7 +84,7 @@ public class MainFragment extends SherlockFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "OnClick");
                 Intent newActivity = new Intent();
-                newActivity.setClass(getSherlockActivity(), ListEntriesForTask.class);
+                newActivity.setClass(getSherlockActivity(), ListEntriesForTaskActivity.class);
                 newActivity.putExtra("taskId", aggregatedDrivingRecordAdapter.getItem(position).getDrivingTaskId());
                 getSherlockActivity().startActivity(newActivity);
             }
