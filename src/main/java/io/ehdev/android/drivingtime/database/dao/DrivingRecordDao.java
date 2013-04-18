@@ -9,24 +9,24 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
-import io.ehdev.android.drivingtime.database.model.DrivingTask;
+import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.backend.model.Task;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrivingRecordDao extends DatabaseHelper<DrivingRecord> {
+public class DrivingRecordDao extends DatabaseHelper<Record> {
 
     private static final String TAG = DrivingRecordDao.class.getName();
     public DrivingRecordDao(Context context) {
-        super(context, DrivingRecord.class);
+        super(context, Record.class);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try{
-            TableUtils.createTable(connectionSource, DrivingRecord.class);
+            TableUtils.createTable(connectionSource, Record.class);
         } catch (SQLException e) {
             Log.i(TAG, "Unable to create table");
             Log.d(TAG, e.getMessage());
@@ -38,18 +38,18 @@ public class DrivingRecordDao extends DatabaseHelper<DrivingRecord> {
         Log.i(TAG, "Unable to update table");
     }
 
-    public void addDrivingRecord(DrivingRecord drivingRecord) throws SQLException {
+    public void addDrivingRecord(Record drivingRecord) throws SQLException {
         getDao().createIfNotExists(drivingRecord);
     }
 
-    public List<DrivingRecord> getDrivingRecordForTask(int taskId, Dao<DrivingTask, Integer> drivingTaskDao) throws SQLException {
-        QueryBuilder<DrivingRecord, Integer> qb = getDao().queryBuilder();
+    public List<Record> getDrivingRecordForTask(int taskId, Dao<Task, Integer> drivingTaskDao) throws SQLException {
+        QueryBuilder<Record, Integer> qb = getDao().queryBuilder();
         Where where = qb.where();
-        where.eq(DrivingRecord.DRIVING_TASK_COLUMN_NAME, taskId);
-        PreparedQuery<DrivingRecord> pq = where.prepare();
-        List<DrivingRecord> drivingRecordList = getDao().query(pq);
-        for(DrivingRecord record : drivingRecordList)
+        where.eq(Record.DRIVING_TASK_COLUMN_NAME, taskId);
+        PreparedQuery<Record> pq = where.prepare();
+        List<Record> drivingRecordList = getDao().query(pq);
+        for(Record record : drivingRecordList)
             drivingTaskDao.refresh(record.getDrivingTask());
-        return new ArrayList<DrivingRecord>(drivingRecordList);
+        return new ArrayList<Record>(drivingRecordList);
     }
 }

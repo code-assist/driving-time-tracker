@@ -5,7 +5,7 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
+import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 import java.util.Date;
@@ -14,9 +14,9 @@ import java.util.List;
 public class DrivingRecordAdapter extends BaseAdapter{
 
     private Context context;
-    private List<DrivingRecord> drivingRecordList;
+    private List<Record> drivingRecordList;
 
-    public DrivingRecordAdapter(Context context, List<DrivingRecord> drivingRecordList){
+    public DrivingRecordAdapter(Context context, List<Record> drivingRecordList){
         this.context = context;
 
         this.drivingRecordList = drivingRecordList;
@@ -28,7 +28,7 @@ public class DrivingRecordAdapter extends BaseAdapter{
     }
 
     @Override
-    public DrivingRecord getItem(int position) {
+    public Record getItem(int position) {
         return drivingRecordList.get(position);
     }
 

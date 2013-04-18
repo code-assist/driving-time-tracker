@@ -36,9 +36,9 @@ import android.widget.*;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
+import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
-import io.ehdev.android.drivingtime.database.model.DrivingTask;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
@@ -48,13 +48,13 @@ public class InsertRecordDialog extends SherlockDialogFragment {
 
     private static final String TAG = InsertRecordDialog.class.getSimpleName();
 
-    private DrivingRecord drivingRecord;
+    private Record drivingRecord;
     private AggregatedDrivingRecordDAO dao;
     private AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter;
     private DateTime dateTimeForEntry;
-    private List<DrivingTask> drivingTaskList;
+    private List<Task> drivingTaskList;
 
-    public InsertRecordDialog(DrivingRecord drivingRecord, List<DrivingTask> drivingTaskList, AggregatedDrivingRecordDAO dao, AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter) {
+    public InsertRecordDialog(Record drivingRecord, List<Task> drivingTaskList, AggregatedDrivingRecordDAO dao, AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter) {
         this.drivingRecord = drivingRecord;
         this.dao = dao;
         this.aggregatedDrivingRecordAdapter = aggregatedDrivingRecordAdapter;
@@ -91,7 +91,7 @@ public class InsertRecordDialog extends SherlockDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Dialog thisDialog = InsertRecordDialog.this.getDialog();
-                DrivingTask task = (DrivingTask) ((Spinner) thisDialog.findViewById(R.id.drivingTypeSpinner)).getSelectedItem();
+                Task task = (Task) ((Spinner) thisDialog.findViewById(R.id.drivingTypeSpinner)).getSelectedItem();
                 Long durationOfEntry = getDurationOfEntry(thisDialog);
                 drivingRecord.setDrivingTask(task);
                 drivingRecord.setStartTime(dateTimeForEntry);
@@ -133,7 +133,7 @@ public class InsertRecordDialog extends SherlockDialogFragment {
 
     private void setSpinnerAdapter(View v) {
         ArrayAdapter arrayAdapter =
-                new ArrayAdapter<DrivingTask>(
+                new ArrayAdapter<Task>(
                         getSherlockActivity(),
                         android.R.layout.simple_spinner_item,
                         drivingTaskList);

@@ -9,9 +9,9 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
+import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,15 @@ import java.util.List;
 public class ListDrivingRecordsFragment extends SherlockFragment {
 
     private static final String TAG = ListDrivingRecordsFragment.class.getName();
-    private List<DrivingRecord> drivingRecordList;
+    private List<Record> drivingRecordList;
 
     private void getAllEntries() {
         try{
-            drivingRecordList = new ArrayList<DrivingRecord>();
+            drivingRecordList = new ArrayList<Record>();
             DrivingRecordDao drivingRecordDao = new DrivingRecordDao(getSherlockActivity());
             DrivingTaskDao drivingTaskDao = new DrivingTaskDao(getSherlockActivity());
-            List<DrivingRecord> list = drivingRecordDao.getDao().queryForAll();
-            for(DrivingRecord record : list){
+            List<Record> list = drivingRecordDao.getDao().queryForAll();
+            for(Record record : list){
                 drivingTaskDao.getDao().refresh(record.getDrivingTask());
                 drivingRecordList.add(record);
             }

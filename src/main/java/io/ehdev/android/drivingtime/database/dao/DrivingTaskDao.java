@@ -5,21 +5,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import io.ehdev.android.drivingtime.database.model.DrivingTask;
+import io.ehdev.android.drivingtime.backend.model.Task;
 
 import java.sql.SQLException;
 
-public class DrivingTaskDao extends DatabaseHelper<DrivingTask> {
+public class DrivingTaskDao extends DatabaseHelper<Task> {
 
     private static final String TAG = DrivingTaskDao.class.getSimpleName();
     public DrivingTaskDao(Context context) {
-        super(context, DrivingTask.class);
+        super(context, Task.class);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try{
-            TableUtils.createTable(connectionSource, DrivingTask.class);
+            TableUtils.createTable(connectionSource, Task.class);
         } catch (SQLException e) {
             Log.i(TAG, "Unable to create table");
             Log.d(TAG, e.getMessage());
@@ -31,7 +31,7 @@ public class DrivingTaskDao extends DatabaseHelper<DrivingTask> {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void addDrivingTask(DrivingTask drivingTask) throws SQLException {
+    public void addDrivingTask(Task drivingTask) throws SQLException {
         getDao().createIfNotExists(drivingTask);
     }
 

@@ -1,10 +1,9 @@
 package io.ehdev.android.drivingtime.database.dao;
 
 import android.util.Log;
-import io.ehdev.android.drivingtime.adapter.pojo.AggregatedDrivingRecord;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
-import io.ehdev.android.drivingtime.database.model.DrivingTask;
-import org.joda.time.Duration;
+import io.ehdev.android.drivingtime.backend.AggregatedRecord;
+import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.backend.model.Task;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,29 +21,23 @@ public class AggregatedDrivingRecordDAO {
         this.drivingTaskDao = drivingTaskDao;
     }
 
-    public List<AggregatedDrivingRecord> createDrivingRecordList(){
+    public List<AggregatedRecord> createDrivingRecordList(){
         try{
-            ArrayList<AggregatedDrivingRecord> aggregatedDrivingRecordList = new ArrayList<AggregatedDrivingRecord>();
-            createAggregatedList(aggregatedDrivingRecordList);
+            ArrayList<AggregatedRecord> aggregatedDrivingRecordList = createAggregatedList();
+
             return aggregatedDrivingRecordList;
         } catch (Exception e){
             Log.i(TAG, e.getMessage());
-            return new ArrayList<AggregatedDrivingRecord>();
+            return new ArrayList<AggregatedRecord>();
         }
     }
 
-    private void createAggregatedList(ArrayList<AggregatedDrivingRecord> aggregatedDrivingRecordList) throws SQLException {
-
-        for(DrivingTask drivingTask : drivingTaskDao.getDao().queryForAll()){
-            Duration totalDuration = new Duration(0);
-            for(DrivingRecord drivingRecord : drivingRecordDao.getDao().queryForEq(DrivingRecord.DRIVING_TASK_COLUMN_NAME, drivingTask.getId())){
-                totalDuration = totalDuration.plus(drivingRecord.getDurationOfDriving());
-            }
-            aggregatedDrivingRecordList.add(
-                    new AggregatedDrivingRecord(
-                            drivingTask,
-                            totalDuration));
+    private ArrayList<AggregatedRecord> createAggregatedList() throws SQLException {
+        ArrayList<AggregatedRecord> aggregatedDrivingRecordList = new ArrayList<AggregatedRecord>();
+        for(Task drivingTask : drivingTaskDao.getDao().queryForAll()){
+            aggregatedDrivingRecordList.add(new AggregatedRecord(drivingTask, drivingRecordDao.getDao().queryForEq(Record.DRIVING_TASK_COLUMN_NAME, drivingTask.getId())));
         }
+        return aggregatedDrivingRecordList;
     }
 
     public DrivingRecordDao getDrivingRecordDao() {

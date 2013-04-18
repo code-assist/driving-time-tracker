@@ -13,11 +13,11 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
+import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
-import io.ehdev.android.drivingtime.database.model.DrivingTask;
 import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 import org.joda.time.DateTime;
@@ -62,8 +62,8 @@ public class MainFragment extends SherlockFragment {
             }
 
             private InsertRecordDialog getInsertRecordDialog() throws SQLException {
-                List<DrivingTask> drivingTaskList = drivingTaskDao.getDao().queryForAll();
-                DrivingRecord drivingRecord = new DrivingRecord(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
+                List<Task> drivingTaskList = drivingTaskDao.getDao().queryForAll();
+                Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
                 return new InsertRecordDialog(drivingRecord, drivingTaskList, aggregatedDrivingRecordDAO, aggregatedDrivingRecordAdapter);
             }
         });
@@ -85,7 +85,7 @@ public class MainFragment extends SherlockFragment {
                 Log.i(TAG, "OnClick");
                 Intent newActivity = new Intent();
                 newActivity.setClass(getSherlockActivity(), ListEntriesForTaskActivity.class);
-                newActivity.putExtra("taskId", aggregatedDrivingRecordAdapter.getItem(position).getDrivingTaskId());
+                newActivity.putExtra("taskId", aggregatedDrivingRecordAdapter.getItem(position).getTaskId());
                 getSherlockActivity().startActivity(newActivity);
             }
         });

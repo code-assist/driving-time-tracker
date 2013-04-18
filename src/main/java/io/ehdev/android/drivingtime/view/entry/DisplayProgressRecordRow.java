@@ -44,6 +44,14 @@ public class DisplayProgressRecordRow extends RelativeLayout {
         return rightText;
     }
 
+    public void setLeftText(String text){
+        leftText.setText(text);
+    }
+
+    public void setRightText(String text){
+        rightText.setText(text);
+    }
+
     public void setMaxOfProgress(float maxValue){
         progressBar.setMax((int)maxValue * 100);
     }

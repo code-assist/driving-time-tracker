@@ -26,7 +26,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import io.ehdev.android.drivingtime.adapter.pojo.AggregatedDrivingRecord;
+import io.ehdev.android.drivingtime.backend.AggregatedRecord;
 import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 
 import java.util.List;
@@ -34,9 +34,9 @@ import java.util.List;
 public class AggregatedDrivingRecordAdapter extends BaseAdapter {
 
     private Context viewContext;
-    private List<AggregatedDrivingRecord> recordList;
+    private List<AggregatedRecord> recordList;
 
-    public AggregatedDrivingRecordAdapter(Context viewContext, List<AggregatedDrivingRecord> recordList){
+    public AggregatedDrivingRecordAdapter(Context viewContext, List<AggregatedRecord> recordList){
         this.viewContext = viewContext;
         this.recordList = recordList;
     }
@@ -46,7 +46,7 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter {
     }
 
     @Override
-    public AggregatedDrivingRecord getItem(int i) {
+    public AggregatedRecord getItem(int i) {
         return recordList.get(i);
     }
 
@@ -55,7 +55,7 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter {
         return i;
     }
 
-    public void setAggregatedDrivingRecord(List<AggregatedDrivingRecord> recordList){
+    public void setAggregatedDrivingRecord(List<AggregatedRecord> recordList){
         this.recordList = recordList;
         notifyDataSetInvalidated();
     }
@@ -65,9 +65,17 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter {
         if(null == view || !(view instanceof DisplayProgressRecordRow))
             view = new DisplayProgressRecordRow(viewContext);
 
+        AggregatedRecord aggRecord = recordList.get(i);
         DisplayProgressRecordRow displayRecordRow = (DisplayProgressRecordRow) view;
-        recordList.get(i).setView(displayRecordRow);
+        updateViewFields(aggRecord, displayRecordRow);
 
-        return view;  //To change body of implemented methods use File | Settings | File Templates.
+        return view;
+    }
+
+    private void updateViewFields(AggregatedRecord aggRecord, DisplayProgressRecordRow displayRecordRow) {
+        displayRecordRow.setMaxOfProgress(100);
+        displayRecordRow.setCurrentProgress(aggRecord.getPercentageComplete() * 100);
+        displayRecordRow.setLeftText(aggRecord.getTaskName());
+        displayRecordRow.setLeftText(String.format("%2d", (int)(aggRecord.getPercentageComplete() * 100)));
     }
 }

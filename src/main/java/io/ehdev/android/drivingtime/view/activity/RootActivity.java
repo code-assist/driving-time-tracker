@@ -29,10 +29,10 @@ import android.util.Log;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.j256.ormlite.table.TableUtils;
+import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
-import io.ehdev.android.drivingtime.database.model.DrivingRecord;
-import io.ehdev.android.drivingtime.database.model.DrivingTask;
 import io.ehdev.android.drivingtime.view.fragments.ListDrivingRecordsFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import org.joda.time.DateTime;
@@ -85,11 +85,11 @@ public class RootActivity extends SherlockFragmentActivity implements ActionBar.
         drivingTaskDao = new DrivingTaskDao(this);
 
         try{
-            TableUtils.dropTable(drivingTaskDao.getConnectionSource(), DrivingTask.class, true);
-            TableUtils.dropTable(drivingTaskDao.getConnectionSource(), DrivingRecord.class, true);
+            TableUtils.dropTable(drivingTaskDao.getConnectionSource(), Task.class, true);
+            TableUtils.dropTable(drivingTaskDao.getConnectionSource(), Record.class, true);
 
-            TableUtils.createTable(drivingTaskDao.getConnectionSource(), DrivingTask.class);
-            TableUtils.createTable(drivingTaskDao.getConnectionSource(), DrivingRecord.class);
+            TableUtils.createTable(drivingTaskDao.getConnectionSource(), Task.class);
+            TableUtils.createTable(drivingTaskDao.getConnectionSource(), Record.class);
 
             buildTempDatabase();
         } catch (Exception e){
@@ -98,13 +98,13 @@ public class RootActivity extends SherlockFragmentActivity implements ActionBar.
     }
 
     private void buildTempDatabase() throws SQLException {
-        DrivingTask drivingTask1 = new DrivingTask("Highway", Duration.standardHours(40));
-        DrivingTask drivingTask2 = new DrivingTask("Night", Duration.standardHours(8));
+        Task drivingTask1 = new Task("Highway", Duration.standardHours(40));
+        Task drivingTask2 = new Task("Night", Duration.standardHours(8));
         drivingTaskDao.getDao().create(drivingTask1);
         drivingTaskDao.getDao().create(drivingTask2);
 
-        DrivingRecord drivingRecord = new DrivingRecord(drivingTask1, DateTime.now().minusHours(15), Duration.standardHours(10));
-        DrivingRecord drivingRecord2 = new DrivingRecord(drivingTask2, DateTime.now().minusHours(15), Duration.standardHours(6));
+        Record drivingRecord = new Record(drivingTask1, DateTime.now().minusHours(15), Duration.standardHours(10));
+        Record drivingRecord2 = new Record(drivingTask2, DateTime.now().minusHours(15), Duration.standardHours(6));
         drivingRecordDao.getDao().create(drivingRecord);
         drivingRecordDao.getDao().create(drivingRecord2);
     }

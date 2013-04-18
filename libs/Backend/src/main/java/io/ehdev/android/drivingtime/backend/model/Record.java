@@ -1,4 +1,4 @@
-package io.ehdev.android.drivingtime.database.model;
+package io.ehdev.android.drivingtime.backend.model;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -7,14 +7,17 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 
+import java.text.DateFormat;
 
-@DatabaseTable(tableName = DrivingRecord.TableName)
-public class DrivingRecord {
-    public final static String TableName = "drivingRecord";
-    public final static String DRIVING_TASK_COLUMN_NAME = "drivingTask";
+
+@DatabaseTable(tableName= Record.TABLE_NAME)
+public class Record {
+
+    public final static String TABLE_NAME = "record";
+    public final static String DRIVING_TASK_COLUMN_NAME = "task";
 
     @DatabaseField(foreign = true, columnName = DRIVING_TASK_COLUMN_NAME)
-    private DrivingTask drivingTask;
+    private Task drivingTask;
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -28,25 +31,25 @@ public class DrivingRecord {
     @DatabaseField(canBeNull = false, dataType= DataType.SERIALIZABLE)
     private DateTimeZone timeZone;
 
-    public DrivingRecord(DrivingTask drivingTask, DateTime startTime, Duration durationOfDriving) {
+    public Record(Task drivingTask, DateTime startTime, Duration durationOfDriving) {
         this.drivingTask = drivingTask;
         this.startTime = startTime.getMillis();
         this.timeZone = startTime.getZone();
         this.durationOfDriving = durationOfDriving;
     }
 
-    public DrivingRecord() {
+    public Record() {
     }
 
     public int getId() {
         return id;
     }
 
-    public DrivingTask getDrivingTask() {
+    public Task getDrivingTask() {
         return drivingTask;
     }
 
-    public void setDrivingTask(DrivingTask drivingTask) {
+    public void setDrivingTask(Task drivingTask) {
         this.drivingTask = drivingTask;
     }
 
@@ -65,5 +68,9 @@ public class DrivingRecord {
 
     public void setDurationOfDriving(Duration durationOfDriving) {
         this.durationOfDriving = durationOfDriving;
+    }
+
+    public String createStringFromDate(DateFormat dateFormatter){
+        return dateFormatter.format(getStartTime());
     }
 }
