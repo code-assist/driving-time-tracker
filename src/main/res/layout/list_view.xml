@@ -40,7 +40,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/listOfAllRecords"
             android:layout_below="@id/drivingRecordTitle"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:choiceMode="singleChoice"
+            android:listSelector="@drawable/custom_selector"/>
 
 </RelativeLayout>
 

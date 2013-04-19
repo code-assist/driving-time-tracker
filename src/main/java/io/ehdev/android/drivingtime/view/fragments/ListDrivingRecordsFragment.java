@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import io.ehdev.android.drivingtime.R;
@@ -20,6 +21,7 @@ public class ListDrivingRecordsFragment extends SherlockFragment {
 
     private static final String TAG = ListDrivingRecordsFragment.class.getName();
     private List<Record> drivingRecordList;
+    private DrivingRecordAdapter adapter;
 
     private void getAllEntries() {
         try{
@@ -42,7 +44,19 @@ public class ListDrivingRecordsFragment extends SherlockFragment {
         Log.d(TAG, "onCreateView");
         getAllEntries();
         View view = inflater.inflate(R.layout.list_view, null);
-        ((ListView)view.findViewById(R.id.listOfAllRecords)).setAdapter(new DrivingRecordAdapter(getSherlockActivity(), drivingRecordList));
+        ListView listView = (ListView) view.findViewById(R.id.listOfAllRecords);
+        adapter = new DrivingRecordAdapter(getSherlockActivity(), drivingRecordList);
+        listView.setAdapter(adapter);
+        listView.setSelector(R.drawable.custom_selector);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getSherlockActivity().startActionMode(new EditDeleteActionMode(adapter));
+                adapter.setSelected(position);
+            }
+        });
+
         return view;
 
     }

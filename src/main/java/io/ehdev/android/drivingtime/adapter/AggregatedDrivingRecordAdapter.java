@@ -76,6 +76,6 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter {
         displayRecordRow.setMaxOfProgress(100);
         displayRecordRow.setCurrentProgress(aggRecord.getPercentageComplete() * 100);
         displayRecordRow.setLeftText(aggRecord.getTaskName());
-        displayRecordRow.setLeftText(String.format("%2d", (int)(aggRecord.getPercentageComplete() * 100)));
+        displayRecordRow.setRightText(String.format("%2d%%", (int)(aggRecord.getPercentageComplete() * 100)));
     }
 }

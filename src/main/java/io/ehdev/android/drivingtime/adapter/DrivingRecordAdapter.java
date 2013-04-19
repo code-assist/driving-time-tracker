@@ -1,7 +1,9 @@
 package io.ehdev.android.drivingtime.adapter;
 
+import android.R;
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,8 +15,11 @@ import java.util.List;
 
 public class DrivingRecordAdapter extends BaseAdapter{
 
+    public static final String TAG = DrivingRecordAdapter.class.getName();
+
     private Context context;
     private List<Record> drivingRecordList;
+    private int selected = -1;
 
     public DrivingRecordAdapter(Context context, List<Record> drivingRecordList){
         this.context = context;
@@ -52,7 +57,23 @@ public class DrivingRecordAdapter extends BaseAdapter{
         DisplayRecordRow displayRecordRow = (DisplayRecordRow) view;
         displayRecordRow.setRightText(timeString);
         displayRecordRow.setLeftText(getItem(position).getDrivingTask().getTaskName());
+        displayRecordRow.setCenterText(getItem(position).getDurationAsString());
+        displayRecordRow.requestLayout();
+        Log.i(TAG, getItem(position).getDurationAsString());
+        if(position == selected)
+            displayRecordRow.setBackgroundResource(R.color.holo_orange_dark);
+        else
+            displayRecordRow.setBackgroundResource(R.color.transparent);
 
         return displayRecordRow;
+    }
+
+    public void setSelected(int index){
+        this.selected = index;
+        notifyDataSetChanged();
+    }
+
+    public void clearSelected(){
+        setSelected(-1);
     }
 }

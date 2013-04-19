@@ -29,19 +29,22 @@ import android.widget.TextView;
 
 public class DisplayRecordRow extends RelativeLayout {
 
-    private TextView rightText, leftText;
+    private TextView rightText, leftText, centerText;
 
     public DisplayRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p ) {
         super(context);
 
+        setBackgroundResource(android.R.color.transparent);
         setPadding(left_p, top_p, right_p, bottom_p);
 
         createLeftText(context);
         createRightText(context);
+        createCenterText(context);
 
         //Set up the relitive layout
         createLeftLayout();
         createRightLayout();
+        createCenterLayout();
     }
 
     private void createLeftLayout() {
@@ -64,12 +67,30 @@ public class DisplayRecordRow extends RelativeLayout {
         addView(rightText, right);
     }
 
+    private void createCenterLayout() {
+        LayoutParams right =
+                new LayoutParams(LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT);
+
+        right.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        right.addRule(RelativeLayout.CENTER_IN_PARENT);
+        addView(centerText, right);
+    }
+
     private void createRightText(Context context) {
         rightText = new TextView(context);
         rightText.setText("left");
         rightText.setTextSize(18);
         rightText.setTextColor(Color.BLACK);
         rightText.setId(1);
+    }
+
+    private void createCenterText(Context context) {
+        centerText = new TextView(context);
+        centerText.setText("");
+        centerText.setTextSize(18);
+        centerText.setTextColor(Color.BLACK);
+        centerText.setId(3);
     }
 
     private void createLeftText(Context context) {
@@ -86,6 +107,10 @@ public class DisplayRecordRow extends RelativeLayout {
 
     public void setLeftText(String text){
         leftText.setText(text);
+    }
+
+    public void setCenterText(String text){
+        centerText.setText(text);
     }
 
     public DisplayRecordRow(Context context){

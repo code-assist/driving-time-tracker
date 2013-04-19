@@ -6,6 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.text.DateFormat;
 
@@ -72,5 +74,16 @@ public class Record {
 
     public String createStringFromDate(DateFormat dateFormatter){
         return dateFormatter.format(getStartTime());
+    }
+
+    public String getDurationAsString(){
+        PeriodFormatter minutesAndSeconds = new PeriodFormatterBuilder()
+                .appendHours()
+                .appendSeparator(":")
+                .printZeroAlways()
+                .minimumPrintedDigits(2)
+                .appendMinutes()
+                .toFormatter();
+        return minutesAndSeconds.print(durationOfDriving.toPeriod());
     }
 }
