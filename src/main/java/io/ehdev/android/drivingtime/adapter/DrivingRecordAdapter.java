@@ -17,6 +17,8 @@ public class DrivingRecordAdapter extends BaseAdapter{
 
     public static final String TAG = DrivingRecordAdapter.class.getName();
 
+    public static final int NO_VALUE_SELECTED = -1;
+
     private Context context;
     private List<Record> drivingRecordList;
     private int selected = -1;
@@ -73,7 +75,11 @@ public class DrivingRecordAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
+    public boolean isIndexSelected(int index){
+        return index == selected;
+    }
+
     public void clearSelected(){
-        setSelected(-1);
+        setSelected(NO_VALUE_SELECTED);
     }
 }

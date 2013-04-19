@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.ActionMode;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
@@ -22,6 +23,7 @@ public class ListDrivingRecordsFragment extends SherlockFragment {
     private static final String TAG = ListDrivingRecordsFragment.class.getName();
     private List<Record> drivingRecordList;
     private DrivingRecordAdapter adapter;
+    private ActionMode actionMode;
 
     private void getAllEntries() {
         try{
@@ -52,8 +54,16 @@ public class ListDrivingRecordsFragment extends SherlockFragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getSherlockActivity().startActionMode(new EditDeleteActionMode(adapter));
-                adapter.setSelected(position);
+                if(adapter.isIndexSelected(DrivingRecordAdapter.NO_VALUE_SELECTED)){
+                    actionMode = getSherlockActivity().startActionMode(new EditDeleteActionMode(adapter));
+                    adapter.setSelected(position);
+                } else if (!adapter.isIndexSelected(position)) {
+                    adapter.setSelected(position);
+                } else if (actionMode != null){
+                    actionMode.finish();
+                    actionMode = null;
+                }
+
             }
         });
 
