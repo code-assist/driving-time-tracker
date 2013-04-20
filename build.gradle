@@ -26,4 +26,6 @@ dependencies{
     compile project(':subProjects:Backend')
 }
 
-
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.4'
+}
