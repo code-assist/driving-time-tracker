@@ -23,7 +23,7 @@ repositories {
 
 dependencies{
     //compile project(':libs:ActionBarSherlock')
-    compile project(':libs:Backend')
+    compile project(':subProjects:Backend')
 }
 
 
