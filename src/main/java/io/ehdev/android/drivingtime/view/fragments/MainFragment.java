@@ -19,6 +19,7 @@ import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
+import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -53,7 +54,7 @@ public class MainFragment extends SherlockFragment {
             public void onClick(View v) {
                 try {
                     FragmentManager fm = getChildFragmentManager();
-                    InsertRecordDialog insertRecordDialog = getInsertRecordDialog();
+                    InsertOrEditRecordDialog insertRecordDialog = getInsertRecordDialog();
                     insertRecordDialog.show(fm, "Insert Record Dialog");
                 } catch (Exception e) {
                     Toast.makeText(getSherlockActivity(), "Unable to create view", Toast.LENGTH_LONG);
@@ -61,7 +62,7 @@ public class MainFragment extends SherlockFragment {
                 }
             }
 
-            private InsertRecordDialog getInsertRecordDialog() throws SQLException {
+            private InsertOrEditRecordDialog getInsertRecordDialog() throws SQLException {
                 List<Task> drivingTaskList = drivingTaskDao.getDao().queryForAll();
                 Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
                 return new InsertRecordDialog(drivingRecord, drivingTaskList, aggregatedDrivingRecordDAO, aggregatedDrivingRecordAdapter);

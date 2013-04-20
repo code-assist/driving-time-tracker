@@ -12,6 +12,7 @@ import com.actionbarsherlock.view.ActionMode;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 
@@ -24,12 +25,15 @@ public class ListDrivingRecordsFragment extends SherlockFragment {
     private List<Record> drivingRecordList;
     private DrivingRecordAdapter adapter;
     private ActionMode actionMode;
+    private AggregatedDrivingRecordDAO aggregatedDAO;
 
     private void getAllEntries() {
         try{
             drivingRecordList = new ArrayList<Record>();
             DrivingRecordDao drivingRecordDao = new DrivingRecordDao(getSherlockActivity());
             DrivingTaskDao drivingTaskDao = new DrivingTaskDao(getSherlockActivity());
+            aggregatedDAO = new AggregatedDrivingRecordDAO(drivingRecordDao,drivingTaskDao);
+
             List<Record> list = drivingRecordDao.getDao().queryForAll();
             for(Record record : list){
                 drivingTaskDao.getDao().refresh(record.getDrivingTask());
@@ -55,7 +59,7 @@ public class ListDrivingRecordsFragment extends SherlockFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(adapter.isIndexSelected(DrivingRecordAdapter.NO_VALUE_SELECTED)){
-                    actionMode = getSherlockActivity().startActionMode(new EditDeleteActionMode(adapter));
+                    actionMode = getSherlockActivity().startActionMode(new EditDeleteActionMode(adapter, aggregatedDAO));
                     adapter.setSelected(position);
                 } else if (!adapter.isIndexSelected(position)) {
                     adapter.setSelected(position);

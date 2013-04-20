@@ -123,4 +123,5 @@ public class RootActivity extends SherlockFragmentActivity implements ActionBar.
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
         // User selected the already selected tab. Usually do nothing.
     }
+
 }

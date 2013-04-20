@@ -6,13 +6,15 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
+import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
 
 public class EditDeleteActionMode implements ActionMode.Callback {
 
 
     private DrivingRecordAdapter adapter;
+    private AggregatedDrivingRecordDAO aggregatedDrivingRecordDAO;
 
-    public EditDeleteActionMode(DrivingRecordAdapter adapter) {
+    public EditDeleteActionMode(DrivingRecordAdapter adapter, AggregatedDrivingRecordDAO aggregatedDrivingRecordDAO) {
 
         this.adapter = adapter;
     }
