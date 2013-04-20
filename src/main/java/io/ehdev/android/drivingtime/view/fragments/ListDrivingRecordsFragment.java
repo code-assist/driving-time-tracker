@@ -2,6 +2,7 @@ package io.ehdev.android.drivingtime.view.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
@@ -17,6 +18,7 @@ import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
+import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 
@@ -27,13 +29,13 @@ import java.util.List;
 public class ListDrivingRecordsFragment extends Fragment {
 
     private static final String TAG = ListDrivingRecordsFragment.class.getName();
-    private List<Record> drivingRecordList;
     private DrivingRecordAdapter adapter;
     private ActionMode actionMode;
     private DrivingRecordDao drivingRecordDao;
     private DrivingTaskDao drivingTaskDao;
 
-    private void getAllEntries() {
+    private List<Record> getAllEntries() {
+        List<Record> drivingRecordList;
         try{
             drivingRecordList = new ArrayList<Record>();
             drivingRecordDao = new DrivingRecordDao(getActivity());
@@ -44,8 +46,10 @@ public class ListDrivingRecordsFragment extends Fragment {
                 drivingTaskDao.getDao().refresh(record.getDrivingTask());
                 drivingRecordList.add(record);
             }
+            return drivingRecordList;
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());
+            return new ArrayList<Record>();
         }
     }
 
@@ -53,10 +57,9 @@ public class ListDrivingRecordsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Log.d(TAG, "onCreateView");
-        getAllEntries();
         View view = inflater.inflate(R.layout.list_view, null);
         ListView listView = (ListView) view.findViewById(R.id.listOfAllRecords);
-        adapter = new DrivingRecordAdapter(getActivity(), drivingRecordList);
+        adapter = new DrivingRecordAdapter(getActivity(), getAllEntries());
         listView.setAdapter(adapter);
         listView.setSelector(R.drawable.custom_selector);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,7 +68,7 @@ public class ListDrivingRecordsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(adapter.isIndexSelected(DrivingRecordAdapter.NO_VALUE_SELECTED)){
                     try{
-                        actionMode = getActivity().startActionMode(new EditDeleteActionMode(adapter, getShowDialog(), drivingRecordDao.getDao()));
+                        actionMode = getActivity().startActionMode(new EditDeleteActionMode(adapter, getShowDialog(), drivingRecordDao.getDao(), getReloadAdapter()));
                         adapter.setSelected(position);
                     } catch (SQLException e) {
                         Toast.makeText(getActivity(), "Unable to select item", Toast.LENGTH_LONG);
@@ -100,7 +103,23 @@ public class ListDrivingRecordsFragment extends Fragment {
 
             private InsertOrEditRecordDialog getInsertRecordDialog(Record recordToEdit) throws SQLException {
                 List<Task> drivingTaskList = drivingTaskDao.getDao().queryForAll();
-                return new InsertOrEditRecordDialog(recordToEdit, drivingTaskList, drivingRecordDao);
+                return new EditRecordDialog(recordToEdit, drivingTaskList, drivingRecordDao, getReloadAdapter());
+            }
+        };
+    }
+
+    private AsyncTask<Void, Void, List<Record>> getReloadAdapter(){
+
+         return new AsyncTask<Void, Void, List<Record>>(){
+
+            @Override
+            protected List<Record> doInBackground(Void... params) {
+                return getAllEntries();
+            }
+
+            @Override
+            protected void onPostExecute(List<Record> records){
+                adapter.replaceRecords(getAllEntries());
             }
         };
     }

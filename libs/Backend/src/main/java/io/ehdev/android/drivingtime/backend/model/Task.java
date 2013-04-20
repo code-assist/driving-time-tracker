@@ -51,4 +51,26 @@ public class Task {
     public String toString(){
         return taskName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (id != task.id) return false;
+        if (!requiredHours.equals(task.requiredHours)) return false;
+        if (!taskName.equals(task.taskName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + taskName.hashCode();
+        result = 31 * result + requiredHours.hashCode();
+        return result;
+    }
 }

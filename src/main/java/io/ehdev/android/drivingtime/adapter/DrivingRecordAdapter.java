@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,13 @@ public class DrivingRecordAdapter extends BaseAdapter{
     public DrivingRecordAdapter(Context context, List<Record> drivingRecordList){
         this.context = context;
 
-        this.drivingRecordList = drivingRecordList;
+        this.drivingRecordList = new ArrayList<Record>(drivingRecordList);
+    }
+
+    public void replaceRecords(List<Record> drivingRecordList){
+        this.drivingRecordList.clear();
+        this.drivingRecordList.addAll(drivingRecordList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -61,7 +68,6 @@ public class DrivingRecordAdapter extends BaseAdapter{
         displayRecordRow.setLeftText(getItem(position).getDrivingTask().getTaskName());
         displayRecordRow.setCenterText(getItem(position).getDurationAsString());
         displayRecordRow.requestLayout();
-        Log.i(TAG, getItem(position).getDurationAsString());
         if(position == selected)
             displayRecordRow.setBackgroundResource(R.color.holo_orange_dark);
         else

@@ -3,6 +3,8 @@ package io.ehdev.android.drivingtime.backend;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import org.joda.time.Duration;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.List;
 
@@ -64,4 +66,16 @@ public class AggregatedRecord {
             super(parameter);
         }
     }
+
+    public String getRemainingTime(){
+        PeriodFormatter minutesAndSeconds = new PeriodFormatterBuilder()
+                .appendHours()
+                .appendSeparator(":")
+                .printZeroAlways()
+                .minimumPrintedDigits(2)
+                .appendMinutes()
+                .toFormatter();
+        return minutesAndSeconds.print(timeLeft().toPeriod());
+    }
+
 }

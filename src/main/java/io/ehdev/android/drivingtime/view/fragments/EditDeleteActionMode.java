@@ -1,5 +1,6 @@
 package io.ehdev.android.drivingtime.view.fragments;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -12,18 +13,22 @@ import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 
+import java.util.List;
+
 public class EditDeleteActionMode implements ActionMode.Callback {
 
 
     private static final String TAG = EditDeleteActionMode.class.getSimpleName();
     private DrivingRecordAdapter adapter;
     private Dao<Record, Integer> drivingRecordDAO;
+    private AsyncTask<Void, Void, List<Record>> reloadAdapter;
     private ShowDialog dialog;
 
-    public EditDeleteActionMode(DrivingRecordAdapter adapter, ShowDialog dialog, Dao<Record, Integer> drivingRecordDAO) {
+    public EditDeleteActionMode(DrivingRecordAdapter adapter, ShowDialog dialog, Dao<Record, Integer> drivingRecordDAO, AsyncTask<Void, Void, List<Record>> reloadAdapter) {
         this.dialog = dialog;
         this.adapter = adapter;
         this.drivingRecordDAO = drivingRecordDAO;
+        this.reloadAdapter = reloadAdapter;
     }
 
     @Override
@@ -45,6 +50,7 @@ public class EditDeleteActionMode implements ActionMode.Callback {
                 if(!adapter.isIndexSelected(Adapter.IGNORE_ITEM_VIEW_TYPE)){
                     try{
                         drivingRecordDAO.delete(adapter.getItem(adapter.getSelectedIndex()));
+                        reloadAdapter.execute();
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }

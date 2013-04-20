@@ -86,4 +86,30 @@ public class Record {
                 .toFormatter();
         return minutesAndSeconds.print(durationOfDriving.toPeriod());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Record record = (Record) o;
+
+        if (id != record.id) return false;
+        if (startTime != record.startTime) return false;
+        if (!drivingTask.equals(record.drivingTask)) return false;
+        if (!durationOfDriving.equals(record.durationOfDriving)) return false;
+        if (!timeZone.equals(record.timeZone)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = drivingTask.hashCode();
+        result = 31 * result + id;
+        result = 31 * result + (int) (startTime ^ (startTime >>> 32));
+        result = 31 * result + durationOfDriving.hashCode();
+        result = 31 * result + timeZone.hashCode();
+        return result;
+    }
 }

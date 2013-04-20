@@ -128,7 +128,13 @@ public class InsertOrEditRecordDialog extends DialogFragment {
                         getActivity(),
                         android.R.layout.simple_spinner_item,
                         drivingTaskList);
-        ((Spinner)v.findViewById(R.id.drivingTypeSpinner)).setAdapter(arrayAdapter);
+        Spinner spinner = (Spinner) v.findViewById(R.id.drivingTypeSpinner);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setSelection(getSelectedItem());
+    }
+
+    private int getSelectedItem() {
+        return drivingTaskList.indexOf(drivingRecord.getDrivingTask());
     }
 
     private void setCurrentDateTime(View v) {
