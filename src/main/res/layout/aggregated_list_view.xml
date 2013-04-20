@@ -21,11 +21,29 @@
   ~ THE SOFTWARE.
   -->
 
-<resources>
-    <string name="app_name">DrivingTimeReport</string>
-    <string name="aggregatedDrivingRecord">Driving Records</string>
-    <string name="addTrip">Add Trip</string>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-    <string name="addRecord">Submit Record</string>
-    <string name="cancel">Cancel</string>
-</resources>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/aggregatedDrivingRecord"
+            android:textSize="20dip"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:id="@+id/drivingRecordTitle"/>
+
+    <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listOfAllRecords"
+            android:layout_below="@id/drivingRecordTitle"
+            android:layout_alignParentBottom="true"
+            android:choiceMode="singleChoice"
+            android:listSelector="@drawable/custom_selector"/>
+
+</RelativeLayout>
+

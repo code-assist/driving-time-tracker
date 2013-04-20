@@ -2,6 +2,7 @@ package io.ehdev.android.drivingtime.view.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
+import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,11 +59,31 @@ public class ListDrivingRecordsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Log.d(TAG, "onCreateView");
-        View view = inflater.inflate(R.layout.list_view, null);
-        ListView listView = (ListView) view.findViewById(R.id.listOfAllRecords);
+        View view = inflater.inflate(R.layout.detailed_list_view, null);
+        setTitleEntry(view);
         adapter = new DrivingRecordAdapter(getActivity(), getAllEntries());
+        setupListView(view);
+
+        return view;
+
+    }
+
+    private void setTitleEntry(View view) {
+        DisplayRecordRow recordRow = (DisplayRecordRow)view.findViewById(R.id.titleBar);
+        recordRow.setLeftText("Type Of Driving");
+        recordRow.setCenterText("Duration of the Drive");
+        recordRow.setRightText("Start Time");
+        recordRow.setTextAttributes(20, Typeface.BOLD);
+    }
+
+    private void setupListView(View view) {
+        ListView listView = (ListView) view.findViewById(R.id.listOfAllRecords);
         listView.setAdapter(adapter);
         listView.setSelector(R.drawable.custom_selector);
+        addOnItemClickListener(listView);
+    }
+
+    private void addOnItemClickListener(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -82,9 +104,6 @@ public class ListDrivingRecordsFragment extends Fragment {
 
             }
         });
-
-        return view;
-
     }
 
     private ShowDialog getShowDialog(){

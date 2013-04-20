@@ -28,7 +28,10 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import com.j256.ormlite.table.TableUtils;
+import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
@@ -78,6 +81,13 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
         if(savedInstanceState != null){
             getActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab"));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.preferences_menu, menu);
+        return true;
     }
 
     private void setupTempDatabase() {

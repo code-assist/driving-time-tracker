@@ -35,4 +35,8 @@ public class DrivingTaskDao extends DatabaseHelper<Task> {
         getDao().createIfNotExists(drivingTask);
     }
 
+    public Task getTaskFromId(int id) throws SQLException {
+        return getDao().queryForId(id);
+    }
+
 }

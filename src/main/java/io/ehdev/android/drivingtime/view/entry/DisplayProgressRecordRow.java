@@ -78,7 +78,7 @@ public class DisplayProgressRecordRow extends RelativeLayout {
     private void createProgressBarLayout() {
         LayoutParams progressBarLayout =
                 new LayoutParams(LayoutParams.MATCH_PARENT,
-                        100);
+                        50);
 
         Log.i(this.getClass().getSimpleName(), "ID: " + leftText.getId());
 

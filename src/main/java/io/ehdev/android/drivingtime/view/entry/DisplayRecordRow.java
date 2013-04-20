@@ -24,6 +24,8 @@ package io.ehdev.android.drivingtime.view.entry;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,9 +35,12 @@ public class DisplayRecordRow extends RelativeLayout {
 
     public DisplayRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p ) {
         super(context);
-
-        setBackgroundResource(android.R.color.transparent);
         setPadding(left_p, top_p, right_p, bottom_p);
+        setupView(context);
+    }
+
+    private void setupView(Context context) {
+        setBackgroundResource(android.R.color.transparent);
 
         createLeftText(context);
         createRightText(context);
@@ -45,6 +50,18 @@ public class DisplayRecordRow extends RelativeLayout {
         createLeftLayout();
         createRightLayout();
         createCenterLayout();
+    }
+
+    public void setTextAttributes(int fontSize, int typeFace){
+        setViewOptions(rightText, fontSize, typeFace);
+        setViewOptions(leftText, fontSize, typeFace);
+        setViewOptions(centerText, fontSize, typeFace);
+        invalidate();
+    }
+
+    private void setViewOptions(TextView view, int fontSize, int typeFace) {
+        view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+        view.setTypeface(null, typeFace);
     }
 
     private void createLeftLayout() {
@@ -115,5 +132,10 @@ public class DisplayRecordRow extends RelativeLayout {
 
     public DisplayRecordRow(Context context){
         this(context, 12, 3, 10, 3);
+    }
+
+    public DisplayRecordRow(Context context, AttributeSet attrs){
+        super(context, attrs);
+        setupView(context);
     }
 }

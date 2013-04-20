@@ -32,6 +32,7 @@
             android:text="@string/aggregatedDrivingRecord"
             android:textSize="20dip"
             android:gravity="center"
+            android:textStyle="bold"
             android:layout_alignParentTop="true"
             android:id="@+id/drivingRecordTitle"/>
 
