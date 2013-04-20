@@ -22,10 +22,7 @@
 
 package io.ehdev.android.drivingtime.view.dialog;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -33,17 +30,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.Period;
 
 import java.util.List;
 
-public class InsertOrEditRecordDialog extends SherlockDialogFragment {
+public class InsertOrEditRecordDialog extends DialogFragment {
 
     private static final String TAG = InsertOrEditRecordDialog.class.getSimpleName();
 
@@ -59,10 +56,6 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
         this.drivingTaskList = drivingTaskList;
     }
 
-    protected DrivingRecordDao getDrivingRecordDao(){
-        return dao;
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceDialog){
         AlertDialog.Builder builder = createDialogAddButtons();
@@ -76,6 +69,22 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
         setOKButton(builder);
         setCancelButton(builder);
         return builder;
+    }
+
+    private AlertDialog.Builder createDialogBuilder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View v = setupView();
+        builder.setView(v);
+        return builder;
+    }
+
+    private View setupView() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View v = inflater.inflate(R.layout.insert_record_dialog, null);
+        setCurrentDateTime(v);
+        setTimeViewParameters(v);
+        setSpinnerAdapter(v);
+        return v;
     }
 
     private void setCancelButton(AlertDialog.Builder builder) {
@@ -113,26 +122,10 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
         return (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute()) * 60 * 1000L;
     }
 
-    private AlertDialog.Builder createDialogBuilder() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View v = setupView();
-        builder.setView(v);
-        return builder;
-    }
-
-    private View setupView() {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.insert_record_dialog, null);
-        setCurrentDateTime(v);
-        setTimeViewParameters(v);
-        setSpinnerAdapter(v);
-        return v;
-    }
-
     private void setSpinnerAdapter(View v) {
         ArrayAdapter arrayAdapter =
                 new ArrayAdapter<Task>(
-                        getSherlockActivity(),
+                        getActivity(),
                         android.R.layout.simple_spinner_item,
                         drivingTaskList);
         ((Spinner)v.findViewById(R.id.drivingTypeSpinner)).setAdapter(arrayAdapter);
@@ -146,7 +139,7 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
     }
 
     private void setupTimeButtonText(View v) {
-        java.text.DateFormat formatter = DateFormat.getTimeFormat(getSherlockActivity());
+        java.text.DateFormat formatter = DateFormat.getTimeFormat(getActivity());
         ((Button)v.findViewById(R.id.setTime)).setText(formatter.format(dateTimeForEntry.toDate()));
     }
 
@@ -156,18 +149,18 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog =
                         new TimePickerDialog(
-                                getSherlockActivity(),
+                                getActivity(),
                                 new DateTimeSelector(),
                                 dateTimeForEntry.getHourOfDay(),
                                 dateTimeForEntry.getMinuteOfHour(),
-                                DateFormat.is24HourFormat(getSherlockActivity()));
+                                DateFormat.is24HourFormat(getActivity()));
                 timePickerDialog.show();
             }
         });
     }
 
     private void setupDateButtonText(View v) {
-        java.text.DateFormat formatter = DateFormat.getLongDateFormat(getSherlockActivity());
+        java.text.DateFormat formatter = DateFormat.getLongDateFormat(getActivity());
         ((Button)v.findViewById(R.id.setDate)).setText(formatter.format(dateTimeForEntry.toDate()));
     }
 
@@ -177,7 +170,7 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog =
                         new DatePickerDialog(
-                                getSherlockActivity(),
+                                getActivity(),
                                 new DateTimeSelector(),
                                 dateTimeForEntry.getYear(),
                                 dateTimeForEntry.getMonthOfYear(),
@@ -208,8 +201,9 @@ public class InsertOrEditRecordDialog extends SherlockDialogFragment {
     }
 
     private void setTimeViewParameters(View view) {
+        Period duration = drivingRecord.getDurationOfDriving().toPeriod();
         ((TimePicker)view.findViewById(R.id.durationPicker)).setIs24HourView(true);
-        ((TimePicker)view.findViewById(R.id.durationPicker)).setCurrentHour(1);
-        ((TimePicker)view.findViewById(R.id.durationPicker)).setCurrentMinute(0);
+        ((TimePicker)view.findViewById(R.id.durationPicker)).setCurrentHour(duration.getHours());
+        ((TimePicker)view.findViewById(R.id.durationPicker)).setCurrentMinute(duration.getMinutes());
     }
 }

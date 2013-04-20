@@ -1,9 +1,9 @@
 package io.ehdev.android.drivingtime.view.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListEntriesForTaskActivity  extends SherlockFragmentActivity {
+public class ListEntriesForTaskActivity  extends Activity {
     public static final String TAG = ListEntriesForTaskActivity.class.getName();
     private DrivingRecordDao drivingRecordDao;
     private DrivingRecordAdapter drivingRecordAdapter;

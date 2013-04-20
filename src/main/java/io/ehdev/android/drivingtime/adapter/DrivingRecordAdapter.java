@@ -75,6 +75,10 @@ public class DrivingRecordAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
+    public int getSelectedIndex(){
+        return selected;
+    }
+
     public boolean isIndexSelected(int index){
         return index == selected;
     }

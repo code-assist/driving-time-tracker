@@ -26,6 +26,6 @@
     <string name="aggregatedDrivingRecord">Driving Record</string>
     <string name="addTrip">Add Trip</string>
 
-    <string name="addRecord">Add Record</string>
+    <string name="addRecord">Submit Record</string>
     <string name="cancel">Cancel</string>
 </resources>
