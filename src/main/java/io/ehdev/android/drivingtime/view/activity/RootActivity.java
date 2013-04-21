@@ -22,14 +22,12 @@
 
 package io.ehdev.android.drivingtime.view.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.app.*;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.j256.ormlite.table.TableUtils;
 import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
@@ -37,6 +35,8 @@ import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.module.ModuleGetters;
+import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
+import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialogNoUpdate;
 import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import org.joda.time.DateTime;
@@ -44,6 +44,7 @@ import org.joda.time.Duration;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
+import java.util.List;
 
 public class RootActivity extends Activity implements ActionBar.TabListener {
 
@@ -134,6 +135,47 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
         databaseHelper.getRecordDao().create(drivingRecord2);
     }
 
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item){
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.add:
+                createAddEntry();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void createAddEntry() {
+        try{
+            FragmentManager fm = getFragmentManager();
+            InsertOrEditRecordDialog insertRecordDialog = getInsertRecordDialog();
+            insertRecordDialog.show(fm, "Insert Record Dialog");
+        } catch (Exception e) {
+            Log.i(TAG, e.getMessage());
+        }
+    }
+
+    private InsertOrEditRecordDialog getInsertRecordDialog() throws SQLException {
+        List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
+        Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
+        return new InsertRecordDialogNoUpdate(drivingRecord, drivingTaskList, reloadView());
+    }
+
+    private InsertRecordDialogNoUpdate.ReloadView reloadView() {
+        return new InsertRecordDialogNoUpdate.ReloadView(){
+
+            @Override
+            public void reload() {
+                getActionBar().setSelectedNavigationItem(getActionBar().getSelectedNavigationIndex());
+            }
+        };
+    }
+
+
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         if(listOfFragments[tab.getPosition()].isDetached())
             ft.attach(listOfFragments[tab.getPosition()]);
@@ -147,7 +189,8 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     }
 
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // User selected the already selected tab. Usually do nothing.
+        ft.detach(listOfFragments[tab.getPosition()]);
+        ft.attach(listOfFragments[tab.getPosition()]);
     }
 
 }
