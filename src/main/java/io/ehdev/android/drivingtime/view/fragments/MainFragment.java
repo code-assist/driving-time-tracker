@@ -38,10 +38,15 @@ public class MainFragment extends Fragment {
     private static final String TAG = MainFragment.class.getName();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
         objectGraph.inject(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
         Log.d(MainFragment.class.getName(), "onCreateView");
         View view = inflater.inflate(R.layout.main, null);
@@ -68,7 +73,7 @@ public class MainFragment extends Fragment {
             private InsertOrEditRecordDialog getInsertRecordDialog() throws SQLException {
                 List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
                 Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
-                return new InsertRecordDialog(drivingRecord, drivingTaskList, databaseHelper, aggregatedDrivingRecordAdapter);
+                return new InsertRecordDialog(drivingRecord, drivingTaskList, aggregatedDrivingRecordAdapter);
             }
         });
     }

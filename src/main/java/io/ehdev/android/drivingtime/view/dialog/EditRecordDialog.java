@@ -4,14 +4,13 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 
 import java.util.List;
 
 public class EditRecordDialog extends InsertOrEditRecordDialog {
     private AsyncTask<Void, Void, List<Record>> reloadAdapter;
 
-    public EditRecordDialog(Record drivingRecord, List<Task> drivingTaskList, DatabaseHelper dao, AsyncTask<Void, Void, List<Record>> reloadAdapter) {
+    public EditRecordDialog(Record drivingRecord, List<Task> drivingTaskList, AsyncTask<Void, Void, List<Record>> reloadAdapter) {
         super(drivingRecord, drivingTaskList);
         this.reloadAdapter = reloadAdapter;
     }

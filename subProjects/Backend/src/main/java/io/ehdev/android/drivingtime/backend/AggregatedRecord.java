@@ -51,7 +51,7 @@ public class AggregatedRecord {
         return result > 1 ? 1 : result;
     }
 
-    public Duration timeLeft(){
+    public Duration getTimeLeft(){
         Duration timeServed = getDuration();
         if(timeServed.isLongerThan(thisTask.getRequiredHours()))
             return Duration.ZERO;
@@ -66,7 +66,7 @@ public class AggregatedRecord {
     }
 
     public String getRemainingTime(){
-        return StringHelper.getPeriodAsString(getRequiredTime().toPeriod());
+        return StringHelper.getPeriodAsString(getTimeLeft().toPeriod());
     }
 
 }

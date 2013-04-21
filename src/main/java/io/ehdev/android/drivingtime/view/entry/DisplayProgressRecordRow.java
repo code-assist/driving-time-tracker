@@ -26,7 +26,6 @@ import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -70,8 +69,6 @@ public class DisplayProgressRecordRow extends RelativeLayout {
         LayoutParams progressBarLayout =
                 new LayoutParams(LayoutParams.MATCH_PARENT,
                         50);
-
-        Log.i(this.getClass().getSimpleName(), "ID: " + leftText.getId());
 
         progressBarLayout.addRule(RelativeLayout.BELOW, leftText.getId());
         progressBarLayout.addRule(RelativeLayout.BELOW, rightText.getId());

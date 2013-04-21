@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
@@ -33,7 +35,14 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
     private DrivingRecordAdapter adapter;
 
     @Inject
-    private DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        objectGraph.inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -105,7 +114,7 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
 
             private InsertOrEditRecordDialog getInsertRecordDialog(Record recordToEdit) throws SQLException {
                 List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
-                return new EditRecordDialog(recordToEdit, drivingTaskList, databaseHelper, getReloadAdapter());
+                return new EditRecordDialog(recordToEdit, drivingTaskList, getReloadAdapter());
             }
         };
     }

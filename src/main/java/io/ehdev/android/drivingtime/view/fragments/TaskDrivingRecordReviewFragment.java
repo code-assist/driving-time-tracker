@@ -26,9 +26,6 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordsF
     private Task drivingTask;
     private DisplayProgressRecordRow progressBar;
 
-    @Inject
-    private DatabaseHelper databaseHelper;
-
     public TaskDrivingRecordReviewFragment(Task drivingTask){
 
         this.drivingTask = drivingTask;

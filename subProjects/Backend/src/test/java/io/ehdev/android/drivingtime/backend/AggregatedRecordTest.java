@@ -60,7 +60,7 @@ public class AggregatedRecordTest {
     @Test
     public void testTimeLeft_ShouldBe25Min(){
         AggregatedRecord aggregatedRecord = new AggregatedRecord(tempTask, list);
-        assertEquals(25, aggregatedRecord.timeLeft().getStandardMinutes());
+        assertEquals(25, aggregatedRecord.getTimeLeft().getStandardMinutes());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class AggregatedRecordTest {
         list = new ArrayList<Record>();
         list.add(tempRecord);
         AggregatedRecord aggregatedRecord = new AggregatedRecord(tempTask, list);
-        assertEquals(0, aggregatedRecord.timeLeft().getStandardMinutes());
+        assertEquals(0, aggregatedRecord.getTimeLeft().getStandardMinutes());
     }
 
 
