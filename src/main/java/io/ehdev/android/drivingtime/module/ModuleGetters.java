@@ -7,6 +7,7 @@ import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.view.activity.RootActivity;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
+import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import io.ehdev.android.drivingtime.view.fragments.TaskDrivingRecordReviewFragment;
@@ -20,7 +21,8 @@ import javax.inject.Singleton;
                 AllDrivingRecordReviewFragment.class,
                 TaskDrivingRecordReviewFragment.class,
                 InsertOrEditRecordDialog.class,
-                EditRecordDialog.class
+                EditRecordDialog.class,
+                InsertRecordDialog.class
         }
 )
 public class ModuleGetters {
