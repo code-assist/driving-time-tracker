@@ -31,7 +31,7 @@ import java.util.List;
 public class MainFragment extends Fragment {
 
     @Inject
-    private DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
 
     private AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter;
 

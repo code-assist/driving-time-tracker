@@ -48,7 +48,7 @@ public class InsertOrEditRecordDialog extends DialogFragment {
     private static final String TAG = InsertOrEditRecordDialog.class.getSimpleName();
 
     @Inject
-    private DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
 
     private Record drivingRecord;
     private DateTime dateTimeForEntry;

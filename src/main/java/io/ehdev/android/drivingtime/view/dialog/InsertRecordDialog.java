@@ -15,7 +15,7 @@ public class InsertRecordDialog extends InsertOrEditRecordDialog {
     private AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter;
 
     @Inject
-    private DatabaseHelper dao;
+    protected DatabaseHelper dao;
 
     public InsertRecordDialog(Record drivingRecord, List<Task> drivingTaskList, AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter) {
         super(drivingRecord, drivingTaskList);

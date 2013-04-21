@@ -52,7 +52,7 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     private Fragment listOfFragments[];
 
     @Inject
-    private DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
 
     @Override
     protected void onResume(){
