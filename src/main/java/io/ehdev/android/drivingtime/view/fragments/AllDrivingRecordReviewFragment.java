@@ -61,18 +61,21 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingFragment<
         recordRow.setTextAttributes(20, Typeface.BOLD);
     }
 
-    protected AsyncTask<Void, Void, List<Record>> getReloadAdapter(){
+    protected PostEditExecution getReloadAdapter(){
+        return new PostEditExecution() {
+            public void execute(){
+                new AsyncTask<Void, Void, List<Record>>(){
 
-        return new AsyncTask<Void, Void, List<Record>>(){
+                    @Override
+                    protected List<Record> doInBackground(Void... params) {
+                        return getAllEntries();
+                    }
 
-            @Override
-            protected List<Record> doInBackground(Void... params) {
-                return getAllEntries();
-            }
-
-            @Override
-            protected void onPostExecute(List<Record> records){
-                getAdapter().replaceDataSet(getAllEntries());
+                    @Override
+                    protected void onPostExecute(List<Record> records){
+                        getAdapter().replaceDataSet(getAllEntries());
+                    }
+                }.execute();
             }
         };
     }

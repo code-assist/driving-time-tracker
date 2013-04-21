@@ -43,6 +43,11 @@ public class DrivingRecordAdapter extends EntryAdapter<Record> {
     }
 
     @Override
+    public Class getClassName() {
+        return Record.class;
+    }
+
+    @Override
     public long getItemId(int position) {
         return drivingRecordList.get(position).getId();
     }

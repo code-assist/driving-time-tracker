@@ -25,4 +25,6 @@ public abstract class EntryAdapter<T> extends BaseAdapter implements ReplaceData
     public void clearSelected(){
         setSelected(NO_VALUE_SELECTED);
     }
+
+    abstract public Class getClassName();
 }

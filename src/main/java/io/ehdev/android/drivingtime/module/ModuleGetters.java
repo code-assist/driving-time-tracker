@@ -6,13 +6,11 @@ import dagger.Provides;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
 import io.ehdev.android.drivingtime.view.activity.RootActivity;
-import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
-import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
-import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
-import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialogNoUpdate;
+import io.ehdev.android.drivingtime.view.dialog.*;
 import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import io.ehdev.android.drivingtime.view.fragments.TaskDrivingRecordReviewFragment;
+import io.ehdev.android.drivingtime.view.fragments.TaskEditFragment;
 
 import javax.inject.Singleton;
 
@@ -26,7 +24,10 @@ import javax.inject.Singleton;
                 EditRecordDialog.class,
                 InsertRecordDialog.class,
                 InsertRecordDialogNoUpdate.class,
-                ListEntriesForTaskActivity.class
+                ListEntriesForTaskActivity.class,
+                TaskEditFragment.class,
+                InsertOrEditTaskDialog.class,
+                EditTaskDialog.class
         }
 )
 public class ModuleGetters {

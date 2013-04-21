@@ -154,7 +154,7 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
 
     private void launchTaskActivity() {
         Intent taskIntent = new Intent();
-        taskIntent.setClass(this, TaskConfiguration.class);
+        taskIntent.setClass(this, TaskConfigurationActivity.class);
         startActivity(taskIntent);
     }
 

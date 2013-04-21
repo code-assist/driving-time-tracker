@@ -4,6 +4,7 @@ import android.R;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import io.ehdev.android.drivingtime.backend.StringHelper;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
@@ -52,11 +53,11 @@ public class TaskReviewAdapter extends EntryAdapter<Task>{
 
         if(null == view || !(view instanceof DisplayRecordRow))
             view = new DisplayRecordRow(context);
-
+        Task thisTask = getItem(position);
         DisplayRecordRow displayRecordRow = (DisplayRecordRow) view;
-        displayRecordRow.setRightText("right");
-        displayRecordRow.setLeftText("left");
-        displayRecordRow.setCenterText("center");
+        displayRecordRow.setLeftText(thisTask.getTaskName());
+        displayRecordRow.setRightText(String.format("%s hours", StringHelper.getPeriodAsString(thisTask.getRequiredHours().toPeriod())));
+        displayRecordRow.setCenterText("");
         displayRecordRow.requestLayout();
         if(position == selected)
             displayRecordRow.setBackgroundResource(R.color.holo_orange_dark);
@@ -81,5 +82,10 @@ public class TaskReviewAdapter extends EntryAdapter<Task>{
 
     public void clearSelected(){
         setSelected(NO_VALUE_SELECTED);
+    }
+
+    @Override
+    public Class getClassName() {
+        return Task.class;
     }
 }

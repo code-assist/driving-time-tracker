@@ -45,6 +45,6 @@
             android:name=".view.activity.ListEntriesForTaskActivity" />
 
         <activity
-            android:name=".view.activity.TaskConfiguration" />
+            android:name=".view.activity.TaskConfigurationActivity" />
     </application>
 </manifest>

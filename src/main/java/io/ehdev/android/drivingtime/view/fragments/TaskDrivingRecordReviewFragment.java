@@ -94,19 +94,22 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingFragment
         return R.layout.aggregated_list_view;
     }
 
-    protected AsyncTask<Void, Void, List<Record>> getReloadAdapter(){
+    protected PostEditExecution getReloadAdapter(){
+        return new PostEditExecution() {
+            public void execute(){
+                new AsyncTask<Void, Void, List<Record>>(){
 
-        return new AsyncTask<Void, Void, List<Record>>(){
+                    @Override
+                    protected List<Record> doInBackground(Void... params) {
+                        return getTaskEntries();
+                    }
 
-            @Override
-            protected List<Record> doInBackground(Void... params) {
-                return getTaskEntries();
-            }
-
-            @Override
-            protected void onPostExecute(List<Record> records){
-                getAdapter().replaceDataSet(records);
-                setProgressBar(records);
+                    @Override
+                    protected void onPostExecute(List<Record> records){
+                        getAdapter().replaceDataSet(records);
+                        setProgressBar(records);
+                    }
+                }.execute();
             }
         };
     }

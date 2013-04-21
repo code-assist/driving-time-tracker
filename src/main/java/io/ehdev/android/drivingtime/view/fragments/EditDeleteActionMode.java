@@ -1,6 +1,5 @@
 package io.ehdev.android.drivingtime.view.fragments;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -10,10 +9,7 @@ import android.widget.Adapter;
 import com.j256.ormlite.dao.Dao;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.EntryAdapter;
-import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
-
-import java.util.List;
 
 public class EditDeleteActionMode<T> implements ActionMode.Callback {
 
@@ -21,10 +17,10 @@ public class EditDeleteActionMode<T> implements ActionMode.Callback {
     private static final String TAG = EditDeleteActionMode.class.getSimpleName();
     private EntryAdapter<T> adapter;
     private Dao<T, Integer> drivingRecordDAO;
-    private AsyncTask<Void, Void, List<Record>> reloadAdapter;
+    private AbstractListDrivingFragment.PostEditExecution reloadAdapter;
     private ShowDialog<T> dialog;
 
-    public EditDeleteActionMode(EntryAdapter<T> adapter, ShowDialog<T> dialog, Dao<T, Integer> drivingRecordDAO, AsyncTask<Void, Void, List<Record>> reloadAdapter) {
+    public EditDeleteActionMode(EntryAdapter<T> adapter, ShowDialog<T> dialog, Dao<T, Integer> drivingRecordDAO, AbstractListDrivingFragment.PostEditExecution reloadAdapter) {
         this.dialog = dialog;
         this.adapter = adapter;
         this.drivingRecordDAO = drivingRecordDAO;
