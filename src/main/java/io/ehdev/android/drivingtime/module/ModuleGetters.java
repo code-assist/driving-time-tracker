@@ -4,6 +4,7 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
 import io.ehdev.android.drivingtime.view.activity.RootActivity;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
@@ -24,7 +25,8 @@ import javax.inject.Singleton;
                 InsertOrEditRecordDialog.class,
                 EditRecordDialog.class,
                 InsertRecordDialog.class,
-                InsertRecordDialogNoUpdate.class
+                InsertRecordDialogNoUpdate.class,
+                ListEntriesForTaskActivity.class
         }
 )
 public class ModuleGetters {
