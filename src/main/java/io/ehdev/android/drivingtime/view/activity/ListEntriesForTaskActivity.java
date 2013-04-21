@@ -1,7 +1,6 @@
 package io.ehdev.android.drivingtime.view.activity;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +19,7 @@ public class ListEntriesForTaskActivity  extends Activity {
     public static final String TAG = ListEntriesForTaskActivity.class.getName();
     public static final int VIEW_ID = 1;
     private Task drivingTask;
+    private TaskDrivingRecordReviewFragment taskFragmentView;
 
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
@@ -32,9 +32,9 @@ public class ListEntriesForTaskActivity  extends Activity {
 
             FrameLayout fl = new FrameLayout(this);
             fl.setId(VIEW_ID);
-            Fragment newFragment = new TaskDrivingRecordReviewFragment(drivingTask);
+            taskFragmentView = new TaskDrivingRecordReviewFragment(drivingTask);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(VIEW_ID, newFragment).commit();
+            ft.add(VIEW_ID, taskFragmentView).commit();
 
             setContentView(fl);
         } catch (Exception e) {
@@ -66,6 +66,8 @@ public class ListEntriesForTaskActivity  extends Activity {
         switch (item.getItemId()){
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.add:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

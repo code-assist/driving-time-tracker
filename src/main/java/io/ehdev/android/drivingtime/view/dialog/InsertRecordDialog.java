@@ -21,7 +21,7 @@ public class InsertRecordDialog extends InsertOrEditRecordDialog {
     @Override
     public void onDismiss(DialogInterface dialog){
         super.onDismiss(dialog);
-        aggregatedDrivingRecordAdapter.setAggregatedDrivingRecord(dao.createDrivingRecordList());
+        aggregatedDrivingRecordAdapter.replaceDataSet(dao.createDrivingRecordList());
     }
 
 }

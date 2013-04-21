@@ -101,7 +101,7 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordsF
 
             @Override
             protected void onPostExecute(List<Record> records){
-                getAdapter().replaceRecords(records);
+                getAdapter().replaceDataSet(records);
                 setProgressBar(records);
             }
         };

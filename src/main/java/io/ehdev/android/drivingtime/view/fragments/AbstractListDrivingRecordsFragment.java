@@ -13,11 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import io.ehdev.android.drivingtime.R;
+import io.ehdev.android.drivingtime.StaticInstances;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
-import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
@@ -30,8 +29,13 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
     private static final String TAG = AbstractListDrivingRecordsFragment.class.getName();
     private DrivingRecordAdapter adapter;
     private ActionMode actionMode;
-    private DrivingRecordDao drivingRecordDao;
-    private DrivingTaskDao drivingTaskDao;
+    private StaticInstances staticInstances;
+
+    public AbstractListDrivingRecordsFragment(){
+        super();
+        staticInstances = StaticInstances.getInstance();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -57,22 +61,6 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
         return adapter;
     }
 
-    protected void setDrivingRecordDao(DrivingRecordDao drivingRecordDao) {
-        this.drivingRecordDao = drivingRecordDao;
-    }
-
-    protected void setDrivingTaskDao(DrivingTaskDao drivingTaskDao) {
-        this.drivingTaskDao = drivingTaskDao;
-    }
-
-    protected DrivingRecordDao getDrivingRecordDao() {
-        return drivingRecordDao;
-    }
-
-    protected DrivingTaskDao getDrivingTaskDao() {
-        return drivingTaskDao;
-    }
-
     private void setupListView(View view) {
         ListView listView = (ListView) view.findViewById(R.id.listOfAllRecords);
         listView.setAdapter(adapter);
@@ -87,7 +75,7 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(adapter.isIndexSelected(DrivingRecordAdapter.NO_VALUE_SELECTED)){
                     try{
-                        actionMode = getActivity().startActionMode(new EditDeleteActionMode(adapter, getShowDialog(), drivingRecordDao.getDao(), getReloadAdapter()));
+                        actionMode = getActivity().startActionMode(new EditDeleteActionMode(adapter, getShowDialog(), staticInstances.getDrivingRecordDao(), getReloadAdapter()));
                         adapter.setSelected(position);
                     } catch (SQLException e) {
                         Toast.makeText(getActivity(), "Unable to select item", Toast.LENGTH_LONG);
@@ -118,8 +106,8 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
             }
 
             private InsertOrEditRecordDialog getInsertRecordDialog(Record recordToEdit) throws SQLException {
-                List<Task> drivingTaskList = drivingTaskDao.getDao().queryForAll();
-                return new EditRecordDialog(recordToEdit, drivingTaskList, drivingRecordDao, getReloadAdapter());
+                List<Task> drivingTaskList = staticInstances.getDrivingTaskDao().queryForAll();
+                return new EditRecordDialog(recordToEdit, drivingTaskList, staticInstances.getDrivingRecordHelper(), getReloadAdapter());
             }
         };
     }

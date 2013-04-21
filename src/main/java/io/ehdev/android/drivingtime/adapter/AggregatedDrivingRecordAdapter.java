@@ -31,7 +31,7 @@ import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 
 import java.util.List;
 
-public class AggregatedDrivingRecordAdapter extends BaseAdapter {
+public class AggregatedDrivingRecordAdapter extends BaseAdapter implements ReplaceDataSetAdapter<AggregatedRecord> {
 
     private Context viewContext;
     private List<AggregatedRecord> recordList;
@@ -55,7 +55,7 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter {
         return i;
     }
 
-    public void setAggregatedDrivingRecord(List<AggregatedRecord> recordList){
+    public void replaceDataSet(List<AggregatedRecord> recordList){
         this.recordList = recordList;
         notifyDataSetInvalidated();
     }

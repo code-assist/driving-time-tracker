@@ -3,7 +3,6 @@ package io.ehdev.android.drivingtime.adapter;
 import android.R;
 import android.content.Context;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DrivingRecordAdapter extends BaseAdapter{
+public class DrivingRecordAdapter extends BaseAdapter implements ReplaceDataSetAdapter<Record>{
 
     public static final String TAG = DrivingRecordAdapter.class.getName();
 
@@ -30,7 +29,7 @@ public class DrivingRecordAdapter extends BaseAdapter{
         this.drivingRecordList = new ArrayList<Record>(drivingRecordList);
     }
 
-    public void replaceRecords(List<Record> drivingRecordList){
+    public void replaceDataSet(List<Record> drivingRecordList){
         this.drivingRecordList.clear();
         this.drivingRecordList.addAll(drivingRecordList);
         notifyDataSetChanged();

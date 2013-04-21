@@ -72,7 +72,7 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordsFr
 
             @Override
             protected void onPostExecute(List<Record> records){
-                getAdapter().replaceRecords(getAllEntries());
+                getAdapter().replaceDataSet(getAllEntries());
             }
         };
     }
