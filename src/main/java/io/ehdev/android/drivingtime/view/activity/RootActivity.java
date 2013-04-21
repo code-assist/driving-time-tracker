@@ -36,7 +36,7 @@ import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
-import io.ehdev.android.drivingtime.view.fragments.ListDrivingRecordsFragment;
+import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -60,7 +60,7 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
 
         listOfFragments = new Fragment[]{
                 MainFragment.instantiate(this, MainFragment.class.getName()),
-                ListDrivingRecordsFragment.instantiate(this, ListDrivingRecordsFragment.class.getName())
+                AllDrivingRecordReviewFragment.instantiate(this, AllDrivingRecordReviewFragment.class.getName())
         };
 
         getActionBar().addTab(

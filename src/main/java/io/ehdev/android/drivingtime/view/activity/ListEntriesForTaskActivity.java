@@ -1,11 +1,14 @@
 package io.ehdev.android.drivingtime.view.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
@@ -14,6 +17,7 @@ import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
+import io.ehdev.android.drivingtime.view.fragments.TaskDrivingRecordReviewFragment;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -24,6 +28,7 @@ import java.util.List;
 
 public class ListEntriesForTaskActivity  extends Activity {
     public static final String TAG = ListEntriesForTaskActivity.class.getName();
+    public static final int VIEW_ID = 1;
     private DrivingRecordAdapter drivingRecordAdapter;
     private DisplayProgressRecordRow progress;
     private Task drivingTask;
@@ -37,10 +42,20 @@ public class ListEntriesForTaskActivity  extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setTitle(String.format("%s Driving Records", taskName));
 
+            FrameLayout fl = new FrameLayout(this);
+            fl.setId(VIEW_ID);
+            Fragment newFragment = new TaskDrivingRecordReviewFragment(drivingTask);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(VIEW_ID, newFragment).commit();
+
+            setContentView(fl);
+
+            /*
             List<Record> listOfEntries = getListOfEntries(taskId);
             setViewLogic(listOfEntries);
 
             setProgressBar(listOfEntries);
+            */
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());
             finish();

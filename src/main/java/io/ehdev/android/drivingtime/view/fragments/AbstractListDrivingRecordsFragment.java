@@ -2,7 +2,6 @@ package io.ehdev.android.drivingtime.view.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,58 +21,56 @@ import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
-import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListDrivingRecordsFragment extends Fragment {
+public abstract class AbstractListDrivingRecordsFragment extends Fragment {
 
-    private static final String TAG = ListDrivingRecordsFragment.class.getName();
+    private static final String TAG = AbstractListDrivingRecordsFragment.class.getName();
     private DrivingRecordAdapter adapter;
     private ActionMode actionMode;
     private DrivingRecordDao drivingRecordDao;
     private DrivingTaskDao drivingTaskDao;
 
-    private List<Record> getAllEntries() {
-        List<Record> drivingRecordList;
-        try{
-            drivingRecordList = new ArrayList<Record>();
-            drivingRecordDao = new DrivingRecordDao(getActivity());
-            drivingTaskDao = new DrivingTaskDao(getActivity());
-
-            List<Record> list = drivingRecordDao.getDao().queryForAll();
-            for(Record record : list){
-                drivingTaskDao.getDao().refresh(record.getDrivingTask());
-                drivingRecordList.add(record);
-            }
-            return drivingRecordList;
-        } catch (Exception e) {
-            Log.i(TAG, e.getMessage());
-            return new ArrayList<Record>();
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Log.d(TAG, "onCreateView");
-        View view = inflater.inflate(R.layout.detailed_list_view, null);
-        setTitleEntry(view);
-        adapter = new DrivingRecordAdapter(getActivity(), getAllEntries());
+        View view = inflater.inflate(getViewId(), null);
+        if(adapter == null)
+            throw new AdapterNotSetException();
         setupListView(view);
 
         return view;
-
     }
 
-    private void setTitleEntry(View view) {
-        DisplayRecordRow recordRow = (DisplayRecordRow)view.findViewById(R.id.titleBar);
-        recordRow.setLeftText("Type Of Driving");
-        recordRow.setCenterText("Duration of the Drive");
-        recordRow.setRightText("Start Time");
-        recordRow.setTextAttributes(20, Typeface.BOLD);
+    protected int getViewId(){
+        return R.layout.detailed_list_view;
+    }
+
+    protected void setAdapter(DrivingRecordAdapter adapter){
+        this.adapter = adapter;
+    }
+
+    public DrivingRecordAdapter getAdapter() {
+        return adapter;
+    }
+
+    protected void setDrivingRecordDao(DrivingRecordDao drivingRecordDao) {
+        this.drivingRecordDao = drivingRecordDao;
+    }
+
+    protected void setDrivingTaskDao(DrivingTaskDao drivingTaskDao) {
+        this.drivingTaskDao = drivingTaskDao;
+    }
+
+    protected DrivingRecordDao getDrivingRecordDao() {
+        return drivingRecordDao;
+    }
+
+    protected DrivingTaskDao getDrivingTaskDao() {
+        return drivingTaskDao;
     }
 
     private void setupListView(View view) {
@@ -127,19 +124,8 @@ public class ListDrivingRecordsFragment extends Fragment {
         };
     }
 
-    private AsyncTask<Void, Void, List<Record>> getReloadAdapter(){
+    abstract protected AsyncTask<Void, Void, List<Record>> getReloadAdapter();
 
-         return new AsyncTask<Void, Void, List<Record>>(){
-
-            @Override
-            protected List<Record> doInBackground(Void... params) {
-                return getAllEntries();
-            }
-
-            @Override
-            protected void onPostExecute(List<Record> records){
-                adapter.replaceRecords(getAllEntries());
-            }
-        };
+    public static class AdapterNotSetException extends RuntimeException {
     }
 }
