@@ -10,10 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import io.ehdev.android.drivingtime.R;
-import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
-import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 import io.ehdev.android.drivingtime.view.fragments.TaskDrivingRecordReviewFragment;
 
 import java.sql.SQLException;
@@ -21,8 +19,6 @@ import java.sql.SQLException;
 public class ListEntriesForTaskActivity  extends Activity {
     public static final String TAG = ListEntriesForTaskActivity.class.getName();
     public static final int VIEW_ID = 1;
-    private DrivingRecordAdapter drivingRecordAdapter;
-    private DisplayProgressRecordRow progress;
     private Task drivingTask;
 
     public void onCreate(Bundle savedInstance){
