@@ -6,15 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.StringHelper;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
-import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,9 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordsF
     private Task drivingTask;
     private DisplayProgressRecordRow progressBar;
 
+    @Inject
+    private DatabaseHelper databaseHelper;
+
     public TaskDrivingRecordReviewFragment(Task drivingTask){
 
         this.drivingTask = drivingTask;
@@ -31,18 +36,16 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordsF
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        setupDao();
+
+        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        objectGraph.inject(this);
+
         List<Record> taskEntries = getTaskEntries();
         setAdapter(new DrivingRecordAdapter(getActivity(), taskEntries));
         View view = super.onCreateView(inflater, container, savedInstanceState);
         progressBar = (DisplayProgressRecordRow)view.findViewById(R.id.taskProgressDialog);
         setProgressBar(taskEntries);
         return view;
-    }
-
-    private void setupDao() {
-        setDrivingRecordDao(new DrivingRecordDao(getActivity()));
-        setDrivingTaskDao(new DrivingTaskDao(getActivity()));
     }
 
     private void setProgressBar(List<Record> listOfEntries) {
@@ -63,9 +66,9 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordsF
         List<Record> drivingRecordList;
         try{
             drivingRecordList = new ArrayList<Record>();
-            List<Record> list = getDrivingRecordDao().getDrivingRecordForTask(drivingTask.getId(), getDrivingTaskDao().getDao());
+            List<Record> list = databaseHelper.getDrivingRecordForTask(drivingTask.getId(), databaseHelper.getTaskDao());
             for(Record record : list){
-                getDrivingTaskDao().getDao().refresh(record.getDrivingTask());
+                databaseHelper.getTaskDao().refresh(record.getDrivingTask());
                 drivingRecordList.add(record);
             }
             return drivingRecordList;

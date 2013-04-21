@@ -30,34 +30,43 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.Period;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class InsertOrEditRecordDialog extends DialogFragment {
 
     private static final String TAG = InsertOrEditRecordDialog.class.getSimpleName();
 
+    @Inject
+    private DatabaseHelper databaseHelper;
+
     private Record drivingRecord;
-    private DrivingRecordDao dao;
     private DateTime dateTimeForEntry;
     private List<Task> drivingTaskList;
 
-    public InsertOrEditRecordDialog(Record drivingRecord, List<Task> drivingTaskList, DrivingRecordDao dao) {
+    public InsertOrEditRecordDialog(Record drivingRecord, List<Task> drivingTaskList) {
+
         this.drivingRecord = drivingRecord;
-        this.dao = dao;
         dateTimeForEntry = drivingRecord.getStartTime();
         this.drivingTaskList = drivingTaskList;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceDialog){
+
+        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        objectGraph.inject(this);
+
         AlertDialog.Builder builder = createDialogAddButtons();
         builder.setTitle("Add Driving Time");
         return builder.create();
@@ -107,7 +116,7 @@ public class InsertOrEditRecordDialog extends DialogFragment {
                 drivingRecord.setStartTime(dateTimeForEntry);
                 drivingRecord.setDurationOfDriving(new Duration(durationOfEntry));
                 try{
-                    dao.getDao().createOrUpdate(drivingRecord);
+                    databaseHelper.getRecordDao().createOrUpdate(drivingRecord);
                 } catch (Exception e) {
                     Log.i(TAG, e.getMessage());
                 }

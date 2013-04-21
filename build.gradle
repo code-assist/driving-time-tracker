@@ -1,3 +1,4 @@
+
 buildscript {
     repositories {
         mavenCentral()
@@ -23,9 +24,11 @@ repositories {
 
 dependencies{
     //compile project(':libs:ActionBarSherlock')
+    compile 'com.squareup:dagger:0.9.1'
+    compile 'com.squareup:dagger-compiler:0.9.1'
     compile project(':subProjects:Backend')
 }
 
-task wrapper(type: Wrapper) {
+task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
 	gradleVersion = '1.4'
 }

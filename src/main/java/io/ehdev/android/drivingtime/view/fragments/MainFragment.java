@@ -11,38 +11,39 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.AggregatedDrivingRecordDAO;
-import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
-import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialog;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
 public class MainFragment extends Fragment {
 
-    private DrivingTaskDao drivingTaskDao;
-    private DrivingRecordDao drivingRecordDao;
+    @Inject
+    private DatabaseHelper databaseHelper;
+
     private AggregatedDrivingRecordAdapter aggregatedDrivingRecordAdapter;
-    private AggregatedDrivingRecordDAO aggregatedDrivingRecordDAO;
 
     private static final String TAG = MainFragment.class.getName();
-
-    public MainFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        objectGraph.inject(this);
+
         Log.d(MainFragment.class.getName(), "onCreateView");
-        setupDAOs();
         View view = inflater.inflate(R.layout.main, null);
         showEntryDialogFromButtonClick(view);
         addAdapterToListView(view);
@@ -65,22 +66,16 @@ public class MainFragment extends Fragment {
             }
 
             private InsertOrEditRecordDialog getInsertRecordDialog() throws SQLException {
-                List<Task> drivingTaskList = drivingTaskDao.getDao().queryForAll();
+                List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
                 Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
-                return new InsertRecordDialog(drivingRecord, drivingTaskList, aggregatedDrivingRecordDAO, aggregatedDrivingRecordAdapter);
+                return new InsertRecordDialog(drivingRecord, drivingTaskList, databaseHelper, aggregatedDrivingRecordAdapter);
             }
         });
     }
 
-    private void setupDAOs() {
-        drivingTaskDao = new DrivingTaskDao(getActivity());
-        drivingRecordDao = new DrivingRecordDao(getActivity());
-    }
-
     private void addAdapterToListView(View view) {
         ListView newListView = (ListView)view.findViewById(R.id.currentStatusView);
-        aggregatedDrivingRecordDAO = new AggregatedDrivingRecordDAO(drivingRecordDao, drivingTaskDao);
-        aggregatedDrivingRecordAdapter = new AggregatedDrivingRecordAdapter(getActivity(), aggregatedDrivingRecordDAO.createDrivingRecordList());
+        aggregatedDrivingRecordAdapter = new AggregatedDrivingRecordAdapter(getActivity(), databaseHelper.createDrivingRecordList());
         newListView.setAdapter(aggregatedDrivingRecordAdapter);
         newListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

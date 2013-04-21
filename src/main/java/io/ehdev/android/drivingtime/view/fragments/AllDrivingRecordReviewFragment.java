@@ -7,13 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
-import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
-import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +23,15 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordsFr
 
     public static final String TAG = AllDrivingRecordReviewFragment.class.getSimpleName();
 
+    @Inject
+    private DatabaseHelper databaseHelper;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        setupDao();
+
+        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        objectGraph.inject(this);
+
         setAdapter(new DrivingRecordAdapter(getActivity(), getAllEntries()));
         View view = super.onCreateView(inflater, container, savedInstanceState);
         setTitleEntry(view);
@@ -31,19 +39,14 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordsFr
         return view;
     }
 
-    private void setupDao() {
-        setDrivingRecordDao(new DrivingRecordDao(getActivity()));
-        setDrivingTaskDao(new DrivingTaskDao(getActivity()));
-    }
-
 
     private List<Record> getAllEntries() {
         List<Record> drivingRecordList;
         try{
             drivingRecordList = new ArrayList<Record>();
-            List<Record> list = getDrivingRecordDao().getDao().queryForAll();
+            List<Record> list = databaseHelper.getRecordDao().queryForAll();
             for(Record record : list){
-                getDrivingTaskDao().getDao().refresh(record.getDrivingTask());
+                databaseHelper.getTaskDao().refresh(record.getDrivingTask());
                 drivingRecordList.add(record);
             }
             return drivingRecordList;

@@ -13,29 +13,27 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import io.ehdev.android.drivingtime.R;
-import io.ehdev.android.drivingtime.StaticInstances;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 
+import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
 public abstract class AbstractListDrivingRecordsFragment extends Fragment {
 
     private static final String TAG = AbstractListDrivingRecordsFragment.class.getName();
-    private DrivingRecordAdapter adapter;
+
     private ActionMode actionMode;
-    private StaticInstances staticInstances;
+    private DrivingRecordAdapter adapter;
 
-    public AbstractListDrivingRecordsFragment(){
-        super();
-        staticInstances = StaticInstances.getInstance();
-    }
-
+    @Inject
+    private DatabaseHelper databaseHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -49,16 +47,16 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
         return view;
     }
 
-    protected int getViewId(){
-        return R.layout.detailed_list_view;
+    public DrivingRecordAdapter getAdapter() {
+        return adapter;
     }
 
-    protected void setAdapter(DrivingRecordAdapter adapter){
+    public void setAdapter(DrivingRecordAdapter adapter) {
         this.adapter = adapter;
     }
 
-    public DrivingRecordAdapter getAdapter() {
-        return adapter;
+    protected int getViewId(){
+        return R.layout.detailed_list_view;
     }
 
     private void setupListView(View view) {
@@ -75,7 +73,7 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(adapter.isIndexSelected(DrivingRecordAdapter.NO_VALUE_SELECTED)){
                     try{
-                        actionMode = getActivity().startActionMode(new EditDeleteActionMode(adapter, getShowDialog(), staticInstances.getDrivingRecordDao(), getReloadAdapter()));
+                        actionMode = getActivity().startActionMode(new EditDeleteActionMode(adapter, getShowDialog(), databaseHelper.getRecordDao(), getReloadAdapter()));
                         adapter.setSelected(position);
                     } catch (SQLException e) {
                         Toast.makeText(getActivity(), "Unable to select item", Toast.LENGTH_LONG);
@@ -106,8 +104,8 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
             }
 
             private InsertOrEditRecordDialog getInsertRecordDialog(Record recordToEdit) throws SQLException {
-                List<Task> drivingTaskList = staticInstances.getDrivingTaskDao().queryForAll();
-                return new EditRecordDialog(recordToEdit, drivingTaskList, staticInstances.getDrivingRecordHelper(), getReloadAdapter());
+                List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
+                return new EditRecordDialog(recordToEdit, drivingTaskList, databaseHelper, getReloadAdapter());
             }
         };
     }

@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.view.fragments.TaskDrivingRecordReviewFragment;
 
 import java.sql.SQLException;
@@ -52,7 +52,7 @@ public class ListEntriesForTaskActivity  extends Activity {
 
     private String getTaskName(int taskId) {
         try{
-            drivingTask = new DrivingTaskDao(this).getTaskFromId(taskId);
+            drivingTask = new DatabaseHelper(this).getTaskFromId(taskId);
             if(drivingTask != null)
                 return drivingTask.getTaskName();
         } catch (SQLException e) {

@@ -31,8 +31,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import com.j256.ormlite.table.TableUtils;
+import dagger.ObjectGraph;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.R;
-import io.ehdev.android.drivingtime.StaticInstances;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
@@ -40,21 +42,26 @@ import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import javax.inject.Inject;
 import java.sql.SQLException;
 
 public class RootActivity extends Activity implements ActionBar.TabListener {
 
+    private static final String TAG = RootActivity.class.getName();
+
     private Fragment listOfFragments[];
 
-    private static final String TAG = RootActivity.class.getName();
-    private StaticInstances staticInstance;
+    @Inject
+    private DatabaseHelper databaseHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        staticInstance = StaticInstances.getInstance(this);
+
 
         if (savedInstanceState == null) {
+            ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(this));
+            objectGraph.inject(this);
             setupTempDatabase();
         }
 
@@ -93,11 +100,11 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     private void setupTempDatabase() {
 
         try{
-            TableUtils.dropTable(staticInstance.getDrivingTaskHelper().getConnectionSource(), Task.class, true);
-            TableUtils.dropTable(staticInstance.getDrivingRecordHelper().getConnectionSource(), Record.class, true);
+            TableUtils.dropTable(databaseHelper.getConnectionSource(), Task.class, true);
+            TableUtils.dropTable(databaseHelper.getConnectionSource(), Record.class, true);
 
-            TableUtils.createTable(staticInstance.getDrivingTaskHelper().getConnectionSource(), Task.class);
-            TableUtils.createTable(staticInstance.getDrivingRecordHelper().getConnectionSource(), Record.class);
+            TableUtils.createTable(databaseHelper.getConnectionSource(), Task.class);
+            TableUtils.createTable(databaseHelper.getConnectionSource(), Record.class);
 
             buildTempDatabase();
         } catch (Exception e){
@@ -108,13 +115,13 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     private void buildTempDatabase() throws SQLException {
         Task drivingTask1 = new Task("Highway", Duration.standardHours(40));
         Task drivingTask2 = new Task("Night", Duration.standardHours(8));
-        staticInstance.getDrivingTaskDao().create(drivingTask1);
-        staticInstance.getDrivingTaskDao().create(drivingTask2);
+        databaseHelper.getTaskDao().create(drivingTask1);
+        databaseHelper.getTaskDao().create(drivingTask2);
 
         Record drivingRecord = new Record(drivingTask1, DateTime.now().minusHours(15), Duration.standardHours(10));
         Record drivingRecord2 = new Record(drivingTask2, DateTime.now().minusHours(15), Duration.standardHours(6));
-        staticInstance.getDrivingRecordDao().create(drivingRecord);
-        staticInstance.getDrivingRecordDao().create(drivingRecord2);
+        databaseHelper.getRecordDao().create(drivingRecord);
+        databaseHelper.getRecordDao().create(drivingRecord2);
     }
 
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
