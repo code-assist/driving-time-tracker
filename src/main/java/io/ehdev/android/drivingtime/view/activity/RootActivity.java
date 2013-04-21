@@ -32,11 +32,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import com.j256.ormlite.table.TableUtils;
 import dagger.ObjectGraph;
-import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
-import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
+import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import org.joda.time.DateTime;
@@ -53,6 +53,16 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
 
     @Inject
     private DatabaseHelper databaseHelper;
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActionBar.Tab tab = getActionBar().getSelectedTab();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(listOfFragments[tab.getPosition()]);
+        ft.attach(listOfFragments[tab.getPosition()]);
+        ft.commit();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
