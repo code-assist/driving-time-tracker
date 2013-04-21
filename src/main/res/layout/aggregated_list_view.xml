@@ -36,12 +36,19 @@
             android:layout_alignParentTop="true"
             android:id="@+id/drivingRecordTitle"/>
 
+    <io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow
+        android:id="@+id/taskProgressDialog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:layout_alignParentBottom="true"    />
+
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listOfAllRecords"
             android:layout_below="@id/drivingRecordTitle"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@id/taskProgressDialog"
             android:choiceMode="singleChoice"
             android:listSelector="@drawable/custom_selector"/>
 

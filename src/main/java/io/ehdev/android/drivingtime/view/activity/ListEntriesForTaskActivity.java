@@ -3,6 +3,8 @@ package io.ehdev.android.drivingtime.view.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import io.ehdev.android.drivingtime.R;
@@ -11,6 +13,10 @@ import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DrivingRecordDao;
 import io.ehdev.android.drivingtime.database.dao.DrivingTaskDao;
+import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,29 +25,70 @@ import java.util.List;
 public class ListEntriesForTaskActivity  extends Activity {
     public static final String TAG = ListEntriesForTaskActivity.class.getName();
     private DrivingRecordAdapter drivingRecordAdapter;
+    private DisplayProgressRecordRow progress;
+    private Task drivingTask;
 
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        int taskId = this.getIntent().getExtras().getInt("taskId");
-        String taskName = getTaskName(taskId);
+        try{
+            int taskId = this.getIntent().getExtras().getInt("taskId");
+            String taskName = getTaskName(taskId);
 
-        List <Record> drivingRecordList = getListOfEntries(taskId);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setTitle(String.format("%s Driving Records", taskName));
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setTitle(String.format("%s Driving Records", taskName));
 
-        setViewLogic(drivingRecordList);
+            List<Record> listOfEntries = getListOfEntries(taskId);
+            setViewLogic(listOfEntries);
+
+            setProgressBar(listOfEntries);
+        } catch (Exception e) {
+            Log.i(TAG, e.getMessage());
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_window, menu);
+        return true;
+    }
+
+    private void setProgressBar(List<Record> listOfEntries) {
+        progress = (DisplayProgressRecordRow)findViewById(R.id.taskProgressDialog);
+
+        long requiredTime = drivingTask.getRequiredHours().getMillis();
+        long spentTime = getRemainingTime(listOfEntries);
+
+        progress.setRightText(String.format("%s Required", getRemainingTime(requiredTime)));
+        progress.setMaxOfProgress(requiredTime);
+
+        progress.setCurrentProgress(spentTime);
+        progress.setLeftText(String.format("Remaining : %s", getRemainingTime(requiredTime - spentTime)));
+
+        progress.invalidate();
+    }
+
+    private long getRemainingTime(List<Record> listOfEntries) {
+        long requiredTime = 0;
+        if(listOfEntries == null || listOfEntries.isEmpty())
+            return requiredTime;
+
+        for(Record record : listOfEntries)
+            requiredTime += record.getDurationOfDriving().getMillis();
+
+        return requiredTime;
     }
 
     private String getTaskName(int taskId) {
         try{
-            Task thisTask = new DrivingTaskDao(this).getTaskFromId(taskId);
-            if(thisTask != null)
-                return thisTask.getTaskName();
-            else
-                return "";
+            drivingTask = new DrivingTaskDao(this).getTaskFromId(taskId);
+            if(drivingTask != null)
+                return drivingTask.getTaskName();
         } catch (SQLException e) {
-            return "";
+            finish();
         }
+        throw new TaskNotValidException();
     }
 
     @Override
@@ -72,5 +119,19 @@ public class ListEntriesForTaskActivity  extends Activity {
             Log.i(TAG, e.getMessage());
             return new ArrayList<Record>();
         }
+    }
+
+    private String getRemainingTime(long remainingTime){
+        PeriodFormatter minutesAndSeconds = new PeriodFormatterBuilder()
+                .appendHours()
+                .appendSeparator(":")
+                .printZeroAlways()
+                .minimumPrintedDigits(2)
+                .appendMinutes()
+                .toFormatter();
+        return minutesAndSeconds.print(new Period(remainingTime));
+    }
+
+    public static class TaskNotValidException extends RuntimeException {
     }
 }

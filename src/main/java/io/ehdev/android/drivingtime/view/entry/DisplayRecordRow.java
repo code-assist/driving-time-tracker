@@ -39,6 +39,11 @@ public class DisplayRecordRow extends RelativeLayout {
         setupView(context);
     }
 
+    public DisplayRecordRow(Context context, AttributeSet attrs){
+        super(context, attrs);
+        setupView(context);
+    }
+
     private void setupView(Context context) {
         setBackgroundResource(android.R.color.transparent);
 
@@ -132,10 +137,5 @@ public class DisplayRecordRow extends RelativeLayout {
 
     public DisplayRecordRow(Context context){
         this(context, 12, 3, 10, 3);
-    }
-
-    public DisplayRecordRow(Context context, AttributeSet attrs){
-        super(context, attrs);
-        setupView(context);
     }
 }

@@ -25,6 +25,7 @@ package io.ehdev.android.drivingtime.view.entry;
 import android.R;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ProgressBar;
@@ -36,35 +37,25 @@ public class DisplayProgressRecordRow extends RelativeLayout {
     TextView rightText, leftText;
     ProgressBar progressBar;
 
-    public TextView getLeftText(){
-        return leftText;
-    }
-
-    public TextView getRightText(){
-        return rightText;
-    }
-
-    public void setLeftText(String text){
-        leftText.setText(text);
-    }
-
-    public void setRightText(String text){
-        rightText.setText(text);
-    }
-
-    public void setMaxOfProgress(float maxValue){
-        progressBar.setMax((int)maxValue * 100);
-    }
-
-    public void setCurrentProgress(float currentValue){
-        progressBar.setProgress((int)currentValue * 100);
-    }
 
     public DisplayProgressRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p) {
         super(context);
 
         setPadding(left_p, top_p, right_p, bottom_p);
 
+        setupLayout(context);
+    }
+
+    public DisplayProgressRecordRow(Context context){
+        this(context, 12, 3, 10, 3);
+    }
+
+    public DisplayProgressRecordRow(Context context, AttributeSet attrs){
+        super(context, attrs);
+        setupLayout(context);
+    }
+
+    private void setupLayout(Context context) {
         createProgressBar(context);
         createLeftText(context);
         createRightText(context);
@@ -135,7 +126,27 @@ public class DisplayProgressRecordRow extends RelativeLayout {
         leftText.setId(2);
     }
 
-    public DisplayProgressRecordRow(Context context){
-        this(context, 12, 3, 10, 3);
+    public TextView getLeftText(){
+        return leftText;
+    }
+
+    public TextView getRightText(){
+        return rightText;
+    }
+
+    public void setLeftText(String text){
+        leftText.setText(text);
+    }
+
+    public void setRightText(String text){
+        rightText.setText(text);
+    }
+
+    public void setMaxOfProgress(float maxValue){
+        progressBar.setMax((int)maxValue);
+    }
+
+    public void setCurrentProgress(float currentValue){
+        progressBar.setProgress((int)currentValue);
     }
 }
