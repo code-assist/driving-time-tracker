@@ -64,7 +64,7 @@ public class InsertOrEditRecordDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceDialog){
 
-        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
         objectGraph.inject(this);
 
         AlertDialog.Builder builder = createDialogAddButtons();

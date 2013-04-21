@@ -12,11 +12,9 @@ import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.StringHelper;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordsF
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
         objectGraph.inject(this);
 
         List<Record> taskEntries = getTaskEntries();

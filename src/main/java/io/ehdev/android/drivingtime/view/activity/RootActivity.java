@@ -71,7 +71,7 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
 
 
         if (savedInstanceState == null) {
-            ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(this));
+            ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance(this));
             objectGraph.inject(this);
             setupTempDatabase();
         }

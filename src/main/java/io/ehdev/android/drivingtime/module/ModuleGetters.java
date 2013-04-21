@@ -30,9 +30,23 @@ import javax.inject.Singleton;
 public class ModuleGetters {
 
     private Context context;
+    private static ModuleGetters instance;
 
-    public ModuleGetters(Context context){
+    public static ModuleGetters getInstance(Context context){
+        if( instance == null )
+            instance = new ModuleGetters(context);
+        return instance;
+    }
 
+    public static ModuleGetters getInstance(){
+        if( instance == null )
+            throw new NotInitializeException();
+        return instance;
+    }
+
+
+
+    private ModuleGetters(Context context){
         this.context = context;
     }
 
@@ -42,4 +56,6 @@ public class ModuleGetters {
         return new DatabaseHelper(context);
     }
 
+    public static class NotInitializeException extends RuntimeException {
+    }
 }

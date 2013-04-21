@@ -25,7 +25,7 @@ public class InsertRecordDialog extends InsertOrEditRecordDialog {
     @Override
     public void onDismiss(DialogInterface dialog){
         super.onDismiss(dialog);
-        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
         objectGraph.inject(this);
 
         aggregatedDrivingRecordAdapter.replaceDataSet(dao.createDrivingRecordList());

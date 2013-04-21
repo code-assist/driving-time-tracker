@@ -40,7 +40,7 @@ public abstract class AbstractListDrivingRecordsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        ObjectGraph objectGraph = ObjectGraph.create(new ModuleGetters(getActivity()));
+        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
         objectGraph.inject(this);
     }
 
