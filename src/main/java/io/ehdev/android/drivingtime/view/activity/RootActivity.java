@@ -23,6 +23,7 @@
 package io.ehdev.android.drivingtime.view.activity;
 
 import android.app.*;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -92,7 +93,6 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
                         .newTab()
                         .setTabListener(this)
                         .setText("Review Entries"));
-        getActionBar().setTitle("");
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         getActionBar().setDisplayShowTitleEnabled(true);
 
@@ -144,9 +144,18 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
             case R.id.add:
                 createAddEntry();
                 return true;
+            case R.id.tasks:
+                launchTaskActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void launchTaskActivity() {
+        Intent taskIntent = new Intent();
+        taskIntent.setClass(this, TaskConfiguration.class);
+        startActivity(taskIntent);
     }
 
     private void createAddEntry() {

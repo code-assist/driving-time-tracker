@@ -1,5 +1,6 @@
 package io.ehdev.android.drivingtime.view.fragments;
 
+import android.app.FragmentManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,15 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.model.Record;
+import io.ehdev.android.drivingtime.backend.model.Task;
+import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
+import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
+import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordsFragment {
+public class AllDrivingRecordReviewFragment extends AbstractListDrivingFragment<Record> {
 
     public static final String TAG = AllDrivingRecordReviewFragment.class.getSimpleName();
 
@@ -66,6 +73,27 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordsFr
             @Override
             protected void onPostExecute(List<Record> records){
                 getAdapter().replaceDataSet(getAllEntries());
+            }
+        };
+    }
+
+    protected ShowDialog getShowDialog(){
+        return new ShowDialog<Record>() {
+            @Override
+            public void showDialog(Record recordToEdit) {
+                try {
+                    FragmentManager fm = getChildFragmentManager();
+                    InsertOrEditRecordDialog insertRecordDialog = getInsertRecordDialog(recordToEdit);
+                    insertRecordDialog.show(fm, "Insert Record Dialog");
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Unable to create view", Toast.LENGTH_LONG);
+                    Log.i(TAG, e.getMessage());
+                }
+            }
+
+            private InsertOrEditRecordDialog getInsertRecordDialog(Record recordToEdit) throws SQLException {
+                List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
+                return new EditRecordDialog(recordToEdit, drivingTaskList, getReloadAdapter());
             }
         };
     }
