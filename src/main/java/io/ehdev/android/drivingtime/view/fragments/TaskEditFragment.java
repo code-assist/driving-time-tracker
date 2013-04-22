@@ -1,6 +1,7 @@
 package io.ehdev.android.drivingtime.view.fragments;
 
 import android.app.FragmentManager;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.dialog.EditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
+import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,9 @@ public class TaskEditFragment extends AbstractListDrivingFragment<Task> {
 
         List<Task> taskEntries = getTasks();
         setAdapter(new TaskReviewAdapter(getActivity(), taskEntries));
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        setTitleEntry(view);
+        return view;
     }
 
     private List<Task> getTasks() {
@@ -48,8 +52,12 @@ public class TaskEditFragment extends AbstractListDrivingFragment<Task> {
         }
     }
 
-    protected int getViewId(){
-        return R.layout.aggregated_list_view;
+    private void setTitleEntry(View view) {
+        DisplayRecordRow recordRow = (DisplayRecordRow)view.findViewById(R.id.titleBar);
+        recordRow.setLeftText("Type Of Driving");
+        recordRow.setCenterText("");
+        recordRow.setRightText("Required Time");
+        recordRow.setTextAttributes(20, Typeface.BOLD);
     }
 
     protected PostEditExecution getReloadAdapter(){
