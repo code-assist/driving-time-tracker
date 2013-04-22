@@ -101,6 +101,10 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
         }
     }
 
+    protected void onSaveInstanceState (Bundle outState){
+        outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
