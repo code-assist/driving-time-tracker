@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.j256.ormlite.table.TableUtils;
 import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
@@ -57,6 +58,18 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     protected DatabaseHelper databaseHelper;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this); // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this); // Add this method.
+    }
+
+    @Override
     protected void onResume(){
         super.onResume();
         ActionBar.Tab tab = getActionBar().getSelectedTab();
@@ -70,10 +83,9 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance(this));
+        objectGraph.inject(this);
         if (savedInstanceState == null) {
-            ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance(this));
-            objectGraph.inject(this);
             setupTempDatabase();
         }
 
