@@ -24,6 +24,8 @@ repositories {
 
 dependencies{
     //compile project(':libs:ActionBarSherlock')
+    //compile files("dagger-compiler-1.0-SNAPSHOT.jar")
+    //compile files("dagger-1.0-SNAPSHOT.jar")
     compile 'com.squareup:dagger:0.9.1'
     compile 'com.squareup:dagger-compiler:0.9.1'
     compile project(':subProjects:Backend')

@@ -12,18 +12,19 @@ import android.widget.ListView;
 import android.widget.Toast;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.EntryAdapter;
+import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.view.PostEditExecution;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 
 import java.sql.SQLException;
 
-public abstract class AbstractListDrivingFragment<T> extends Fragment {
+public abstract class AbstractListDrivingTaskFragment extends Fragment {
 
-    private static final String TAG = AbstractListDrivingFragment.class.getName();
+    private static final String TAG = AbstractListDrivingTaskFragment.class.getName();
 
     private ActionMode actionMode;
-    private EntryAdapter<T> adapter;
+    private EntryAdapter<Task> adapter;
 
     abstract protected DatabaseHelper getDatabaseHelper();
 
@@ -39,11 +40,11 @@ public abstract class AbstractListDrivingFragment<T> extends Fragment {
         return view;
     }
 
-    public EntryAdapter<T> getAdapter() {
+    public EntryAdapter<Task> getAdapter() {
         return adapter;
     }
 
-    public void setAdapter(EntryAdapter<T> adapter) {
+    public void setAdapter(EntryAdapter<Task> adapter) {
         this.adapter = adapter;
     }
 
@@ -65,7 +66,7 @@ public abstract class AbstractListDrivingFragment<T> extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(adapter.isIndexSelected(EntryAdapter.NO_VALUE_SELECTED)){
                     try{
-                        actionMode = getActivity().startActionMode(new EditDeleteActionMode<T>(adapter, getShowDialog(), getDatabaseHelper().getDao(adapter.getClassName()), getReloadAdapter()));
+                        actionMode = getActivity().startActionMode(new EditDeleteActionMode<Task>(adapter, getShowDialog(), getDatabaseHelper().getDao(adapter.getClassName()), getReloadAdapter()));
                         adapter.setSelected(position);
                     } catch (SQLException e) {
                         Toast.makeText(getActivity(), "Unable to select item", Toast.LENGTH_LONG);
@@ -81,7 +82,7 @@ public abstract class AbstractListDrivingFragment<T> extends Fragment {
         });
     }
 
-    abstract protected ShowDialog<T> getShowDialog();
+    abstract protected ShowDialog<Task> getShowDialog();
 
     abstract protected PostEditExecution getReloadAdapter();
 

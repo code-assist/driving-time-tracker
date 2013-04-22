@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskEditFragment extends AbstractListDrivingFragment<Task> {
+public class TaskEditFragment extends AbstractListDrivingTaskFragment {
 
     public static final String TAG = TaskEditFragment.class.getSimpleName();
 

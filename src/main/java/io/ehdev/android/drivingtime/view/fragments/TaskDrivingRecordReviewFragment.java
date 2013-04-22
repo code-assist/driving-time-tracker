@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskDrivingRecordReviewFragment extends AbstractListDrivingFragment<Record> {
+public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordFragment {
 
     public static final String TAG = TaskDrivingRecordReviewFragment.class.getSimpleName();
     private Task drivingTask;

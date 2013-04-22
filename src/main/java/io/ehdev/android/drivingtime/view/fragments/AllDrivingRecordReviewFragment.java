@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllDrivingRecordReviewFragment extends AbstractListDrivingFragment<Record> {
+public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordFragment {
 
     public static final String TAG = AllDrivingRecordReviewFragment.class.getSimpleName();
 
