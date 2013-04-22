@@ -15,11 +15,8 @@ public class TaskReviewAdapter extends EntryAdapter<Task>{
 
     public static final String TAG = TaskReviewAdapter.class.getName();
 
-    public static final int NO_VALUE_SELECTED = -1;
-
     private Context context;
     private List<Task> drivingRecordList;
-    private int selected = -1;
 
     public TaskReviewAdapter(Context context, List<Task> drivingRecordList){
         this.context = context;
@@ -59,29 +56,12 @@ public class TaskReviewAdapter extends EntryAdapter<Task>{
         displayRecordRow.setRightText(String.format("%s hours", StringHelper.getPeriodAsString(thisTask.getRequiredHours().toPeriod())));
         displayRecordRow.setCenterText("");
         displayRecordRow.requestLayout();
-        if(position == selected)
+        if(isIndexSelected(position))
             displayRecordRow.setBackgroundResource(R.color.holo_orange_dark);
         else
             displayRecordRow.setBackgroundResource(R.color.transparent);
 
         return displayRecordRow;
-    }
-
-    public void setSelected(int index){
-        this.selected = index;
-        notifyDataSetChanged();
-    }
-
-    public int getSelectedIndex(){
-        return selected;
-    }
-
-    public boolean isIndexSelected(int index){
-        return index == selected;
-    }
-
-    public void clearSelected(){
-        setSelected(NO_VALUE_SELECTED);
     }
 
     @Override

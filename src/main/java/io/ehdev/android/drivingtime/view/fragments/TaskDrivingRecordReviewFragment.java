@@ -14,12 +14,15 @@ import io.ehdev.android.drivingtime.adapter.DrivingRecordAdapter;
 import io.ehdev.android.drivingtime.backend.StringHelper;
 import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.module.ModuleGetters;
+import io.ehdev.android.drivingtime.view.PostEditExecution;
 import io.ehdev.android.drivingtime.view.dialog.EditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
 
+import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +33,22 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingFragment
     private Task drivingTask;
     private DisplayProgressRecordRow progressBar;
 
-    public TaskDrivingRecordReviewFragment(Task drivingTask){
+    @Inject
+    protected DatabaseHelper databaseHelper;
 
+    public TaskDrivingRecordReviewFragment(Task drivingTask){
         this.drivingTask = drivingTask;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
-        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        ObjectGraph objectGraph = ObjectGraph.create( ModuleGetters.getInstance());
         objectGraph.inject(this);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         List<Record> taskEntries = getTaskEntries();
         setAdapter(new DrivingRecordAdapter(getActivity(), taskEntries));
         View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -133,5 +141,10 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingFragment
                 return new EditRecordDialog(recordToEdit, drivingTaskList, getReloadAdapter());
             }
         };
+    }
+
+    @Override
+    protected DatabaseHelper getDatabaseHelper() {
+        return databaseHelper;
     }
 }

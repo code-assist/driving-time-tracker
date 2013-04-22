@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.backend.model.Task;
+import io.ehdev.android.drivingtime.view.PostEditExecution;
 import io.ehdev.android.drivingtime.view.dialog.EditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditTaskDialog;
-import io.ehdev.android.drivingtime.view.fragments.AbstractListDrivingFragment;
 import io.ehdev.android.drivingtime.view.fragments.TaskEditFragment;
 import org.joda.time.Duration;
 
@@ -71,8 +71,8 @@ public class TaskConfigurationActivity extends Activity {
         }
     }
 
-    protected AbstractListDrivingFragment.PostEditExecution reloadView(){
-        return new AbstractListDrivingFragment.PostEditExecution() {
+    protected PostEditExecution reloadView(){
+        return new PostEditExecution() {
             public void execute(){
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(taskEditFragment);

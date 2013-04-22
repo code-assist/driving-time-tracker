@@ -9,6 +9,7 @@ import android.widget.Adapter;
 import com.j256.ormlite.dao.Dao;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.EntryAdapter;
+import io.ehdev.android.drivingtime.view.PostEditExecution;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 
 public class EditDeleteActionMode<T> implements ActionMode.Callback {
@@ -17,10 +18,10 @@ public class EditDeleteActionMode<T> implements ActionMode.Callback {
     private static final String TAG = EditDeleteActionMode.class.getSimpleName();
     private EntryAdapter<T> adapter;
     private Dao<T, Integer> drivingRecordDAO;
-    private AbstractListDrivingFragment.PostEditExecution reloadAdapter;
+    private PostEditExecution reloadAdapter;
     private ShowDialog<T> dialog;
 
-    public EditDeleteActionMode(EntryAdapter<T> adapter, ShowDialog<T> dialog, Dao<T, Integer> drivingRecordDAO, AbstractListDrivingFragment.PostEditExecution reloadAdapter) {
+    public EditDeleteActionMode(EntryAdapter<T> adapter, ShowDialog<T> dialog, Dao<T, Integer> drivingRecordDAO, PostEditExecution reloadAdapter) {
         this.dialog = dialog;
         this.adapter = adapter;
         this.drivingRecordDAO = drivingRecordDAO;

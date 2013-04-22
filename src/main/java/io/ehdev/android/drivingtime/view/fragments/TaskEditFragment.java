@@ -13,12 +13,15 @@ import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.TaskReviewAdapter;
 import io.ehdev.android.drivingtime.backend.model.Task;
+import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.module.ModuleGetters;
+import io.ehdev.android.drivingtime.view.PostEditExecution;
 import io.ehdev.android.drivingtime.view.dialog.EditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +33,18 @@ public class TaskEditFragment extends AbstractListDrivingFragment<Task> {
 
     }
 
+    @Inject
+    protected DatabaseHelper databaseHelper;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        ObjectGraph objectGraph = ObjectGraph.create( ModuleGetters.getInstance());
+        objectGraph.inject(this);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
-        ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
-        objectGraph.inject(this);
-
         List<Task> taskEntries = getTasks();
         setAdapter(new TaskReviewAdapter(getActivity(), taskEntries));
         View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -94,5 +103,10 @@ public class TaskEditFragment extends AbstractListDrivingFragment<Task> {
                 }
             }
         };
+    }
+
+    @Override
+    protected DatabaseHelper getDatabaseHelper() {
+        return databaseHelper;
     }
 }

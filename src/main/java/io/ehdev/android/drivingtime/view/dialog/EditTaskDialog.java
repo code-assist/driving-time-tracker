@@ -2,12 +2,12 @@ package io.ehdev.android.drivingtime.view.dialog;
 
 import android.content.DialogInterface;
 import io.ehdev.android.drivingtime.backend.model.Task;
-import io.ehdev.android.drivingtime.view.fragments.AbstractListDrivingFragment;
+import io.ehdev.android.drivingtime.view.PostEditExecution;
 
 public class EditTaskDialog extends InsertOrEditTaskDialog {
-    private AbstractListDrivingFragment.PostEditExecution reloadAdapter;
+    private PostEditExecution reloadAdapter;
 
-    public EditTaskDialog(Task drivingTask, AbstractListDrivingFragment.PostEditExecution reloadAdapter) {
+    public EditTaskDialog(Task drivingTask, PostEditExecution reloadAdapter) {
         super(drivingTask);
         this.reloadAdapter = reloadAdapter;
     }

@@ -18,7 +18,6 @@ public class DrivingRecordAdapter extends EntryAdapter<Record> {
 
     private Context context;
     private List<Record> drivingRecordList;
-    private int selected = -1;
 
     public DrivingRecordAdapter(Context context, List<Record> drivingRecordList){
         this.context = context;
@@ -69,7 +68,7 @@ public class DrivingRecordAdapter extends EntryAdapter<Record> {
         displayRecordRow.setLeftText(getItem(position).getDrivingTask().getTaskName());
         displayRecordRow.setCenterText(getItem(position).getDurationAsString());
         displayRecordRow.requestLayout();
-        if(position == selected)
+        if(isIndexSelected(position))
             displayRecordRow.setBackgroundResource(R.color.holo_orange_dark);
         else
             displayRecordRow.setBackgroundResource(R.color.transparent);
