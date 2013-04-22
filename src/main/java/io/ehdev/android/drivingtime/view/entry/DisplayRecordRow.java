@@ -25,7 +25,9 @@ package io.ehdev.android.drivingtime.view.entry;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,14 +49,17 @@ public class DisplayRecordRow extends RelativeLayout {
     private void setupView(Context context) {
         setBackgroundResource(android.R.color.transparent);
 
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int maxSize = metrics.widthPixels / 3;
+
         createLeftText(context);
         createRightText(context);
         createCenterText(context);
 
         //Set up the relitive layout
-        createLeftLayout();
-        createRightLayout();
-        createCenterLayout();
+        createLeftLayout((int)(metrics.widthPixels * .25));
+        createRightLayout((int)(metrics.widthPixels * .25));
+        createCenterLayout((int)(metrics.widthPixels * .50));
     }
 
     public void setTextAttributes(int fontSize, int typeFace){
@@ -69,9 +74,9 @@ public class DisplayRecordRow extends RelativeLayout {
         view.setTypeface(null, typeFace);
     }
 
-    private void createLeftLayout() {
+    private void createLeftLayout(int width) {
         LayoutParams left =
-                new LayoutParams(LayoutParams.WRAP_CONTENT,
+                new LayoutParams(width,
                         LayoutParams.WRAP_CONTENT);
 
         left.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -79,9 +84,9 @@ public class DisplayRecordRow extends RelativeLayout {
         addView(leftText, left);
     }
 
-    private void createRightLayout() {
+    private void createRightLayout(int width) {
         LayoutParams right =
-                new LayoutParams(LayoutParams.WRAP_CONTENT,
+                new LayoutParams(width,
                         LayoutParams.WRAP_CONTENT);
 
         right.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -89,9 +94,9 @@ public class DisplayRecordRow extends RelativeLayout {
         addView(rightText, right);
     }
 
-    private void createCenterLayout() {
+    private void createCenterLayout(int width) {
         LayoutParams right =
-                new LayoutParams(LayoutParams.WRAP_CONTENT,
+                new LayoutParams(width,
                         LayoutParams.WRAP_CONTENT);
 
         right.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -105,6 +110,7 @@ public class DisplayRecordRow extends RelativeLayout {
         rightText.setTextSize(18);
         rightText.setTextColor(Color.BLACK);
         rightText.setId(1);
+        rightText.setGravity(Gravity.CENTER);
     }
 
     private void createCenterText(Context context) {
@@ -113,6 +119,7 @@ public class DisplayRecordRow extends RelativeLayout {
         centerText.setTextSize(18);
         centerText.setTextColor(Color.BLACK);
         centerText.setId(3);
+        centerText.setGravity(Gravity.CENTER);
     }
 
     private void createLeftText(Context context) {
@@ -121,6 +128,7 @@ public class DisplayRecordRow extends RelativeLayout {
         leftText.setTextSize(18);
         leftText.setTextColor(Color.BLACK);
         leftText.setId(2);
+        leftText.setGravity(Gravity.CENTER);
     }
 
     public void setRightText(String text){
