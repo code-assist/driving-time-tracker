@@ -43,6 +43,15 @@ public class ListEntriesForTaskActivity  extends Activity {
         doLoadWork(savedInstance);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(taskFragmentView);
+        ft.attach(taskFragmentView);
+        ft.commit();
+    }
+
     private void doLoadWork(Bundle savedInstance) {
         try{
             String taskName = getTaskName(this.getIntent().getExtras().getInt("taskId"));

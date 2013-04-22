@@ -25,6 +25,7 @@ package io.ehdev.android.drivingtime.view.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,8 @@ import org.joda.time.Duration;
 import org.joda.time.Period;
 
 import javax.inject.Inject;
+import java.lang.reflect.Field;
+import java.sql.SQLException;
 
 public class InsertOrEditTaskDialog extends DialogFragment {
 
@@ -51,8 +54,31 @@ public class InsertOrEditTaskDialog extends DialogFragment {
 
     private Task drivingTask;
 
+    protected InsertOrEditTaskDialog(){
+    }
+
     public InsertOrEditTaskDialog(Task drivingTask) {
         this.drivingTask = drivingTask;
+    }
+
+    public void onSaveInstanceState (Bundle outState){
+        outState.putInt("task", drivingTask.getId());
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -61,9 +87,22 @@ public class InsertOrEditTaskDialog extends DialogFragment {
         ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance());
         objectGraph.inject(this);
 
+        if(null != savedInstanceDialog){
+            pullTaskFromSavedInstance(savedInstanceDialog);
+        }
+
         AlertDialog.Builder builder = createDialogAddButtons();
         builder.setTitle("Add Driving Time");
         return builder.create();
+    }
+
+    private void pullTaskFromSavedInstance(Bundle savedInstanceDialog) {
+        int taskId = savedInstanceDialog.getInt("task");
+        try{
+            drivingTask = databaseHelper.getTaskFromId(taskId);
+        } catch (SQLException e) {
+            dismiss();
+        }
     }
 
 
@@ -133,4 +172,5 @@ public class InsertOrEditTaskDialog extends DialogFragment {
         ((TimePicker)view.findViewById(R.id.durationPicker)).setCurrentHour(duration.getHours());
         ((TimePicker)view.findViewById(R.id.durationPicker)).setCurrentMinute(duration.getMinutes());
     }
+
 }

@@ -1,5 +1,6 @@
 package io.ehdev.android.drivingtime.view.fragments;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import io.ehdev.android.drivingtime.view.dialog.ShowDialog;
 import io.ehdev.android.drivingtime.view.entry.DisplayRecordRow;
 
 import javax.inject.Inject;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,22 @@ public class TaskEditFragment extends AbstractListDrivingTaskFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         setTitleEntry(view);
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private List<Task> getTasks() {

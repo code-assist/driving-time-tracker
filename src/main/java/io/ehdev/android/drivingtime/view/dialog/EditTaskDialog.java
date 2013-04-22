@@ -5,11 +5,17 @@ import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.view.PostEditExecution;
 
 public class EditTaskDialog extends InsertOrEditTaskDialog {
-    private PostEditExecution reloadAdapter;
+    private static PostEditExecution reloadAdapter;
+    private static Task drivingTask;
+
+    public EditTaskDialog(){
+        super();
+    }
 
     public EditTaskDialog(Task drivingTask, PostEditExecution reloadAdapter) {
         super(drivingTask);
-        this.reloadAdapter = reloadAdapter;
+        EditTaskDialog.drivingTask = drivingTask;
+        EditTaskDialog.reloadAdapter = reloadAdapter;
     }
 
     @Override

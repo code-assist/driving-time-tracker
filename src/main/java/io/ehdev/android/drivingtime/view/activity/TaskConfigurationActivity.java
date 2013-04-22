@@ -1,6 +1,7 @@
 package io.ehdev.android.drivingtime.view.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -14,13 +15,14 @@ import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.view.PostEditExecution;
 import io.ehdev.android.drivingtime.view.dialog.EditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditTaskDialog;
+import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import io.ehdev.android.drivingtime.view.fragments.TaskEditFragment;
 import org.joda.time.Duration;
 
 public class TaskConfigurationActivity extends Activity {
     public static final String TAG = TaskConfigurationActivity.class.getName();
     private static final int VIEW_ID = 2;
-    private static TaskEditFragment taskEditFragment;
+    private static Fragment taskEditFragment;
 
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
@@ -29,7 +31,7 @@ public class TaskConfigurationActivity extends Activity {
         getActionBar().setTitle("Configure Tasks");
 
         if(savedInstance == null){
-            taskEditFragment = new TaskEditFragment();
+            taskEditFragment = MainFragment.instantiate(this, TaskEditFragment.class.getName());
         }
 
         FrameLayout fl = new FrameLayout(this);
