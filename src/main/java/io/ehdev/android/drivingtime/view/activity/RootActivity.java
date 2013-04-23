@@ -166,9 +166,17 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
             case R.id.tasks:
                 launchTaskActivity();
                 return true;
+            case R.id.about:
+                launchAboutActivity();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void launchAboutActivity() {
+        Intent aboutIntent = new Intent();
+        aboutIntent.setClass(this, AboutActivity.class);
+        startActivity(aboutIntent);
     }
 
     private void launchTaskActivity() {

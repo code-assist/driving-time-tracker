@@ -113,10 +113,18 @@ public class ListEntriesForTaskActivity  extends Activity {
             case R.id.tasks:
                 launchTaskActivity();
                 return true;
+            case R.id.about:
+                launchAboutActivity();
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private void launchAboutActivity() {
+        Intent aboutIntent = new Intent();
+        aboutIntent.setClass(this, AboutActivity.class);
+        startActivity(aboutIntent);
     }
 
 
