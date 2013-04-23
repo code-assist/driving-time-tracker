@@ -1,11 +1,15 @@
 package io.ehdev.android.drivingtime.view.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import io.ehdev.android.drivingtime.R;
 
@@ -20,7 +24,26 @@ public class AboutActivity extends Activity {
         CheckBox checkBox = (CheckBox) findViewById(R.id.opt_out);
         checkBox.setOnCheckedChangeListener(getCheckedListener());
         checkBox.setChecked(getOptOutStatus());
+        ((Button)findViewById(R.id.email_dev)).setOnClickListener(getEmailListener());
 
+    }
+
+    private View.OnClickListener getEmailListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"android+driving@ehdev.io"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Driving Ed Tracker");
+                i.putExtra(Intent.EXTRA_TEXT   , "Hi!");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(AboutActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
     private boolean getOptOutStatus() {
