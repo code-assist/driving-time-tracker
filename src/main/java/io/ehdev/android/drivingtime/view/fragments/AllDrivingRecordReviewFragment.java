@@ -71,9 +71,9 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordFra
 
     private void setTitleEntry(View view) {
         DisplayRecordRow recordRow = (DisplayRecordRow)view.findViewById(R.id.titleBar);
-        recordRow.setLeftText("Type Of Driving");
-        recordRow.setCenterText("Duration of the Drive");
-        recordRow.setRightText("Start Time");
+        recordRow.setLeftText("Type");
+        recordRow.setCenterText("Duration");
+        recordRow.setRightText("Start");
         recordRow.setTextAttributes(20, Typeface.BOLD);
     }
 
