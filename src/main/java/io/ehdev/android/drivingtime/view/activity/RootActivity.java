@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.j256.ormlite.table.TableUtils;
 import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
@@ -61,6 +62,8 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     public void onStart() {
         super.onStart();
         EasyTracker.getInstance().activityStart(this); // Add this method.
+        GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(this);
+        googleAnalytics.getDefaultTracker().sendView("/HomeScreen");
     }
 
     @Override

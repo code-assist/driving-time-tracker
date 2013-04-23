@@ -57,9 +57,9 @@ public class DisplayRecordRow extends RelativeLayout {
         createCenterText(context);
 
         //Set up the relitive layout
-        createLeftLayout((int)(metrics.widthPixels * .25));
-        createRightLayout((int)(metrics.widthPixels * .25));
-        createCenterLayout((int)(metrics.widthPixels * .50));
+        createLeftLayout((int)(metrics.widthPixels * .30));
+        createRightLayout((int)(metrics.widthPixels * .30));
+        createCenterLayout((int)(metrics.widthPixels * .40));
     }
 
     public void setTextAttributes(int fontSize, int typeFace){
@@ -111,6 +111,7 @@ public class DisplayRecordRow extends RelativeLayout {
         rightText.setTextColor(Color.BLACK);
         rightText.setId(1);
         rightText.setGravity(Gravity.CENTER);
+        rightText.setPadding(5, 0, 5, 0);
     }
 
     private void createCenterText(Context context) {
@@ -119,7 +120,8 @@ public class DisplayRecordRow extends RelativeLayout {
         centerText.setTextSize(18);
         centerText.setTextColor(Color.BLACK);
         centerText.setId(3);
-        centerText.setGravity(Gravity.CENTER);
+        centerText.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL );
+        centerText.setPadding(5, 0, 5, 0);
     }
 
     private void createLeftText(Context context) {
@@ -129,6 +131,7 @@ public class DisplayRecordRow extends RelativeLayout {
         leftText.setTextColor(Color.BLACK);
         leftText.setId(2);
         leftText.setGravity(Gravity.CENTER);
+        leftText.setPadding(5, 0, 5, 0);
     }
 
     public void setRightText(String text){

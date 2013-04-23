@@ -122,7 +122,7 @@ public class TaskDrivingRecordReviewFragment extends AbstractListDrivingRecordFr
         };
     }
 
-    protected ShowDialog getShowDialog(){
+    protected ShowDialog<Record> getShowDialog(){
         return new ShowDialog<Record>() {
             @Override
             public void showDialog(Record recordToEdit) {
