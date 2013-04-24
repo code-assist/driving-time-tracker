@@ -12,10 +12,10 @@ repositories {
     mavenCentral()
 }
 
-/*apply plugin: 'android-library'
+apply plugin: 'android-library'
 
 android {
   compileSdkVersion 17
 }
-*/
-apply plugin: 'java'
+
+//apply plugin: 'java'
