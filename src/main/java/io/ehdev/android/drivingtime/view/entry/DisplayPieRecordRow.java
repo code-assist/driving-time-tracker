@@ -26,7 +26,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.RelativeLayout;
+import android.view.Gravity;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.saulpower.piechart.adapter.PieChartAdapter;
 import com.saulpower.piechart.extra.FrictionDynamics;
@@ -35,7 +36,7 @@ import com.saulpower.piechart.views.PieChartView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayPieRecordRow extends RelativeLayout {
+public class DisplayPieRecordRow extends LinearLayout {
 
     TextView rightText, leftText;
     //ProgressBar progressBar;
@@ -60,14 +61,16 @@ public class DisplayPieRecordRow extends RelativeLayout {
     }
 
     private void setupLayout(Context context) {
+
+        setOrientation(LinearLayout.VERTICAL);
         createProgressBar(context);
         createLeftText(context);
         createRightText(context);
 
         //Set up the relitive layout
         createLeftLayout();
-        createRightLayout();
         createProgressBarLayout();
+        createRightLayout();
     }
 
     private void createProgressBarLayout() {
@@ -80,9 +83,9 @@ public class DisplayPieRecordRow extends RelativeLayout {
         value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 (float) 10, getResources().getDisplayMetrics());
 
-        progressBarLayout.addRule(RelativeLayout.BELOW, leftText.getId());
-        progressBarLayout.addRule(RelativeLayout.BELOW, rightText.getId());
         progressBarLayout.setMargins(value, value, value, value);
+
+        progressBarLayout.gravity = Gravity.CENTER;
 
         addView(pieChartView, progressBarLayout);
     }
@@ -91,9 +94,7 @@ public class DisplayPieRecordRow extends RelativeLayout {
         LayoutParams left =
                 new LayoutParams(LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT);
-
-        left.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        left.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        left.gravity = Gravity.CENTER;
         addView(leftText, left);
     }
 
@@ -101,16 +102,13 @@ public class DisplayPieRecordRow extends RelativeLayout {
         LayoutParams right =
                 new LayoutParams(LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT);
+        right.gravity = Gravity.CENTER;
 
-        right.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        right.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         addView(rightText, right);
     }
 
 
     private void createProgressBar(Context context) {
-        int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                (float) 100, getResources().getDisplayMetrics());
         pieChartView = new PieChartView(context);
         //pieChartView.setPadding(10, 15, 10, 15);
         pieChartView.setId(4);
@@ -148,14 +146,6 @@ public class DisplayPieRecordRow extends RelativeLayout {
         leftText.setTextSize(18);
         leftText.setTextColor(Color.BLACK);
         leftText.setId(2);
-    }
-
-    public TextView getLeftText(){
-        return leftText;
-    }
-
-    public TextView getRightText(){
-        return rightText;
     }
 
     public void setLeftText(String text){

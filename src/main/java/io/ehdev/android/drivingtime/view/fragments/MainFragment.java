@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
     }
 
     private void addAdapterToListView(View view) {
-        ListView newListView = (ListView)view.findViewById(R.id.currentStatusView);
+        GridView newListView = (GridView)view.findViewById(R.id.currentStatusView);
         aggregatedDrivingRecordAdapter = new AggregatedDrivingRecordAdapter(getActivity(), databaseHelper.createDrivingRecordList());
         newListView.setAdapter(aggregatedDrivingRecordAdapter);
         newListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
