@@ -1,2 +1,3 @@
 //include ':libs:ActionBarSherlock'
 include ':subProjects:Backend'
+include ':subProjects:ExpandablePieChart'

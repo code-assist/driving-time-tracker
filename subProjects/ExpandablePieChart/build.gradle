@@ -1,0 +1,21 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.3'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+/*apply plugin: 'android-library'
+
+android {
+  compileSdkVersion 17
+}
+*/
+apply plugin: 'java'

@@ -27,7 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import io.ehdev.android.drivingtime.backend.AggregatedRecord;
-import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
+import io.ehdev.android.drivingtime.view.entry.DisplayPieRecordRow;
 
 import java.util.List;
 
@@ -62,19 +62,20 @@ public class AggregatedDrivingRecordAdapter extends BaseAdapter implements Repla
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if(null == view || !(view instanceof DisplayProgressRecordRow))
-            view = new DisplayProgressRecordRow(viewContext);
+        if(null == view || !(view instanceof DisplayPieRecordRow))
+            view = new DisplayPieRecordRow(viewContext);
 
         AggregatedRecord aggRecord = recordList.get(i);
-        DisplayProgressRecordRow displayRecordRow = (DisplayProgressRecordRow) view;
+        DisplayPieRecordRow displayRecordRow = (DisplayPieRecordRow) view;
         updateViewFields(aggRecord, displayRecordRow);
 
         return view;
     }
 
-    private void updateViewFields(AggregatedRecord aggRecord, DisplayProgressRecordRow displayRecordRow) {
-        displayRecordRow.setMaxOfProgress(100);
-        displayRecordRow.setCurrentProgress(aggRecord.getPercentageComplete() * 100);
+    private void updateViewFields(AggregatedRecord aggRecord, DisplayPieRecordRow displayRecordRow) {
+        //displayRecordRow.setMaxOfProgress(100);
+        //displayRecordRow.setCurrentProgress(aggRecord.getPercentageComplete() * 100);
+        displayRecordRow.setProgress(aggRecord.getPercentageComplete());
         displayRecordRow.setLeftText(aggRecord.getTaskName());
         displayRecordRow.setRightText(
                 String.format("%2d%% (%s remaining)",
