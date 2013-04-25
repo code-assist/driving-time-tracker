@@ -29,18 +29,12 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.saulpower.piechart.adapter.PieChartAdapter;
-import com.saulpower.piechart.extra.FrictionDynamics;
-import com.saulpower.piechart.views.PieChartView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DisplayPieRecordRow extends LinearLayout {
 
     TextView rightText, leftText;
     //ProgressBar progressBar;
-    PieChartView pieChartView;
+    PieChart pieChartView;
 
 
     public DisplayPieRecordRow(Context context, int left_p, int top_p, int right_p, int bottom_p) {
@@ -109,7 +103,7 @@ public class DisplayPieRecordRow extends LinearLayout {
 
 
     private void createProgressBar(Context context) {
-        pieChartView = new PieChartView(context);
+        pieChartView = new PieChart(context);
         //pieChartView.setPadding(10, 15, 10, 15);
         pieChartView.setId(4);
 
@@ -158,15 +152,8 @@ public class DisplayPieRecordRow extends LinearLayout {
 
     public void setProgress(float percentageComplete){
         percentageComplete = percentageComplete > 1f ? 1 : percentageComplete;
-        List <Float> entries = new ArrayList<Float>();
-        entries.add(percentageComplete);
-        entries.add(1 - percentageComplete);
-        PieChartAdapter adapter = new PieChartAdapter(getContext(), entries);
-        pieChartView.setAdapter(adapter);
-        pieChartView.setDynamics(new FrictionDynamics(0.95f));
-        pieChartView.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
-        pieChartView.onResume();
-        //progressBar.setMax((int)maxValue);
+        pieChartView.setPercentComplete(percentageComplete);
+
     }
 
     /*
