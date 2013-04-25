@@ -1,10 +1,10 @@
 package io.ehdev.android.drivingtime.view.activity;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ListEntriesForTaskActivity  extends Activity {
+public class ListEntriesForTaskActivity  extends FragmentActivity {
     public static final String TAG = ListEntriesForTaskActivity.class.getName();
     public static final int VIEW_ID = 1;
     private Task drivingTask;

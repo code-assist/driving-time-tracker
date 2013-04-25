@@ -22,7 +22,7 @@ public class AggregatedRecord {
             throw new ValueCannotBeNullException("thisTask");
     }
 
-    public Duration getDuration(){
+    public Duration getTimeSpent(){
         if(null == timeServed){
             timeServed = new Duration(0);
             for(Record record : listOfRecords){
@@ -46,13 +46,13 @@ public class AggregatedRecord {
     }
 
     public float getPercentageComplete(){
-        float result = (float)getDuration().getMillis() / thisTask.getRequiredHours().getMillis();
+        float result = (float) getTimeSpent().getMillis() / thisTask.getRequiredHours().getMillis();
         result = (float)((int)(result * 1000)) / 1000;
         return result > 1 ? 1 : result;
     }
 
     public Duration getTimeLeft(){
-        Duration timeServed = getDuration();
+        Duration timeServed = getTimeSpent();
         if(timeServed.isLongerThan(thisTask.getRequiredHours()))
             return Duration.ZERO;
         else

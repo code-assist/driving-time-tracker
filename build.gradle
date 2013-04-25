@@ -10,12 +10,12 @@ buildscript {
 }
 
 apply plugin: 'idea'
-//apply plugin: 'java'
+apply plugin: 'java'
 
-apply plugin: 'android'
+/*apply plugin: 'android'
 android {
     compileSdkVersion 17
-}
+}*/
 
 repositories {
     mavenCentral()
@@ -25,6 +25,7 @@ dependencies{
     compile files('libs/libGoogleAnalyticsV2.jar')
     compile 'com.squareup:dagger:0.9.1'
     compile 'com.squareup:dagger-compiler:0.9.1'
+    compile 'com.google.android:support-v4:r7'
     compile project(':subProjects:Backend')
 }
 

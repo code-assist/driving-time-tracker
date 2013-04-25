@@ -1,10 +1,10 @@
 package io.ehdev.android.drivingtime.view.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +19,7 @@ import io.ehdev.android.drivingtime.view.fragments.MainFragment;
 import io.ehdev.android.drivingtime.view.fragments.TaskEditFragment;
 import org.joda.time.Duration;
 
-public class TaskConfigurationActivity extends Activity {
+public class TaskConfigurationActivity extends FragmentActivity {
     public static final String TAG = TaskConfigurationActivity.class.getName();
     private static final int VIEW_ID = 2;
     private static Fragment taskEditFragment;

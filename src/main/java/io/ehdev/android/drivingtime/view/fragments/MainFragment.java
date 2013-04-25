@@ -12,9 +12,13 @@ import android.widget.GridView;
 import dagger.ObjectGraph;
 import io.ehdev.android.drivingtime.R;
 import io.ehdev.android.drivingtime.adapter.AggregatedDrivingRecordAdapter;
+import io.ehdev.android.drivingtime.backend.AggregatedRecord;
+import io.ehdev.android.drivingtime.backend.StringHelper;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.module.ModuleGetters;
 import io.ehdev.android.drivingtime.view.activity.ListEntriesForTaskActivity;
+import io.ehdev.android.drivingtime.view.entry.DisplayProgressRecordRow;
+import org.joda.time.Duration;
 
 import javax.inject.Inject;
 
@@ -41,6 +45,20 @@ public class MainFragment extends Fragment {
         Log.d(MainFragment.class.getName(), "onCreateView");
         View view = inflater.inflate(R.layout.main, null);
         addAdapterToListView(view);
+        DisplayProgressRecordRow displayProgressRecordRow = (DisplayProgressRecordRow)view.findViewById(R.id.main_progress_bar);
+        Duration requiredTime = Duration.millis(1);
+        Duration spentTime = Duration.millis(1);
+        for( int i = 0; i < aggregatedDrivingRecordAdapter.getCount(); i++){
+            AggregatedRecord record = aggregatedDrivingRecordAdapter.getItem(i);
+            requiredTime = requiredTime.plus(record.getRequiredTime());
+            spentTime = spentTime.plus(record.getTimeSpent());
+        }
+
+        String timeRequired = String.format("Required %s", StringHelper.getPeriodAsString(requiredTime.toPeriod()));
+        String timeRemaining = String.format("Remaining %s", StringHelper.getPeriodAsString(requiredTime.minus(spentTime).toPeriod()));
+        displayProgressRecordRow.setRightText(timeRequired);
+        displayProgressRecordRow.setLeftText(timeRemaining);
+        displayProgressRecordRow.setCurrentProgress(100 * ((float)spentTime.getMillis() / requiredTime.getMillis()));
         return view;
 
     }

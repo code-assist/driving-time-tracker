@@ -28,7 +28,7 @@ public class AggregatedRecordTest {
     @Test
     public void testEmptyDuration() {
         AggregatedRecord aggregatedRecord = new AggregatedRecord(new Task(), new ArrayList<Record>());
-        assertEquals(Duration.ZERO, aggregatedRecord.getDuration());
+        assertEquals(Duration.ZERO, aggregatedRecord.getTimeSpent());
     }
 
     @Test(expected = AggregatedRecord.ValueCannotBeNullException.class)
