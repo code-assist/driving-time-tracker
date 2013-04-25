@@ -26,7 +26,6 @@ dependencies{
     compile 'com.squareup:dagger:0.9.1'
     compile 'com.squareup:dagger-compiler:0.9.1'
     compile project(':subProjects:Backend')
-    compile project(':subProjects:ExpandablePieChart')
 }
 
 task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
