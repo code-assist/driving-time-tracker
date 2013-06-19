@@ -31,7 +31,7 @@
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/aggregatedDrivingRecord"
+            android:text="@string/aggregatedTitle"
             android:textSize="20dip"
             android:gravity="center"
             android:textStyle="bold"

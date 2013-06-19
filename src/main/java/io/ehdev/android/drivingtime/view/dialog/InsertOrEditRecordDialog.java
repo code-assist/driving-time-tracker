@@ -68,7 +68,7 @@ public class InsertOrEditRecordDialog extends DialogFragment {
         objectGraph.inject(this);
 
         AlertDialog.Builder builder = createDialogAddButtons();
-        builder.setTitle("Add Driving Time");
+        builder.setTitle("Add Time");
         return builder.create();
     }
 

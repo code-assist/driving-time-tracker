@@ -38,7 +38,10 @@ import io.ehdev.android.drivingtime.backend.model.Record;
 import io.ehdev.android.drivingtime.backend.model.Task;
 import io.ehdev.android.drivingtime.database.dao.DatabaseHelper;
 import io.ehdev.android.drivingtime.module.ModuleGetters;
+import io.ehdev.android.drivingtime.view.PostEditExecution;
+import io.ehdev.android.drivingtime.view.dialog.EditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertOrEditRecordDialog;
+import io.ehdev.android.drivingtime.view.dialog.InsertOrEditTaskDialog;
 import io.ehdev.android.drivingtime.view.dialog.InsertRecordDialogNoUpdate;
 import io.ehdev.android.drivingtime.view.fragments.AllDrivingRecordReviewFragment;
 import io.ehdev.android.drivingtime.view.fragments.MainFragment;
@@ -47,6 +50,7 @@ import org.joda.time.Duration;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RootActivity extends Activity implements ActionBar.TabListener {
@@ -88,9 +92,7 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
 
         ObjectGraph objectGraph = ObjectGraph.create(ModuleGetters.getInstance(this));
         objectGraph.inject(this);
-        if (savedInstanceState == null) {
-            setupTempDatabase();
-        }
+
 
         listOfFragments = new Fragment[]{
                 MainFragment.instantiate(this, MainFragment.class.getName()),
@@ -127,33 +129,6 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
         return true;
     }
 
-    private void setupTempDatabase() {
-
-        try{
-            TableUtils.dropTable(databaseHelper.getConnectionSource(), Task.class, true);
-            TableUtils.dropTable(databaseHelper.getConnectionSource(), Record.class, true);
-
-            TableUtils.createTable(databaseHelper.getConnectionSource(), Task.class);
-            TableUtils.createTable(databaseHelper.getConnectionSource(), Record.class);
-
-            buildTempDatabase();
-        } catch (Exception e){
-            Log.i(TAG, e.getMessage());
-        }
-    }
-
-    private void buildTempDatabase() throws SQLException {
-        Task drivingTask1 = new Task("Highway", Duration.standardHours(40));
-        Task drivingTask2 = new Task("Night", Duration.standardHours(8));
-        databaseHelper.getTaskDao().create(drivingTask1);
-        databaseHelper.getTaskDao().create(drivingTask2);
-
-        Record drivingRecord = new Record(drivingTask1, DateTime.now().minusHours(15), Duration.standardHours(10));
-        Record drivingRecord2 = new Record(drivingTask2, DateTime.now().minusHours(15), Duration.standardHours(6));
-        databaseHelper.getRecordDao().create(drivingRecord);
-        databaseHelper.getRecordDao().create(drivingRecord2);
-    }
-
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
         switch (item.getItemId()){
@@ -188,17 +163,25 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     private void createAddEntry() {
         try{
             FragmentManager fm = getFragmentManager();
-            InsertOrEditRecordDialog insertRecordDialog = getInsertRecordDialog();
+            DialogFragment insertRecordDialog = getInsertRecordDialog();
             insertRecordDialog.show(fm, "Insert Record Dialog");
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());
         }
     }
 
-    private InsertOrEditRecordDialog getInsertRecordDialog() throws SQLException {
-        List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
-        Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
-        return new InsertRecordDialogNoUpdate(drivingRecord, drivingTaskList, reloadView());
+    private DialogFragment getInsertRecordDialog() throws SQLException {
+        final List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
+        if(drivingTaskList.size() == 0){
+            return new EditTaskDialog(new Task("", Duration.standardHours(1)), new PostEditExecution() {
+                @Override
+                public void execute() { createAddEntry(); }
+            });
+        } else {
+            Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
+            return new InsertRecordDialogNoUpdate(drivingRecord, drivingTaskList, reloadView());
+        }
+
     }
 
     private InsertRecordDialogNoUpdate.ReloadView reloadView() {

@@ -1,6 +1,7 @@
 package io.ehdev.android.drivingtime.backend;
 
 import org.joda.time.Period;
+import org.joda.time.Duration;
 
 public class StringHelper {
 
@@ -12,7 +13,7 @@ public class StringHelper {
     }
 
     public static String getPeriodAsString(Period remainingTime){
-        remainingTime = remainingTime.getMillis() < 0 ? new Period(0) : remainingTime;
+        remainingTime = remainingTime.toStandardDuration().compareTo(Duration.ZERO) < 0 ? new Period(0) : remainingTime;
         return String.format("%d:%02d", remainingTime.getHours(), remainingTime.getMinutes());
     }
 }

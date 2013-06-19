@@ -48,6 +48,7 @@ import java.sql.SQLException;
 public class InsertOrEditTaskDialog extends DialogFragment {
 
     private static final String TAG = InsertOrEditTaskDialog.class.getSimpleName();
+    private final String title;
 
     @Inject
     protected DatabaseHelper databaseHelper;
@@ -55,10 +56,12 @@ public class InsertOrEditTaskDialog extends DialogFragment {
     private Task drivingTask;
 
     protected InsertOrEditTaskDialog(){
+        title = "Add Time";
     }
 
-    public InsertOrEditTaskDialog(Task drivingTask) {
+    public InsertOrEditTaskDialog(Task drivingTask, String title) {
         this.drivingTask = drivingTask;
+        this.title = title;
     }
 
     public void onSaveInstanceState (Bundle outState){
@@ -92,7 +95,7 @@ public class InsertOrEditTaskDialog extends DialogFragment {
         }
 
         AlertDialog.Builder builder = createDialogAddButtons();
-        builder.setTitle("Add Driving Time");
+        builder.setTitle(title);
         return builder.create();
     }
 

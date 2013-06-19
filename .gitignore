@@ -8,3 +8,10 @@ build/
 gen
 
 analytics.xml
+ActionBarSherlock/
+out/
+*.apk
+
+project.properties
+ant.properties
+local.properties

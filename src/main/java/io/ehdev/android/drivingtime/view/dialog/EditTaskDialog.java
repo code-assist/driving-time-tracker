@@ -8,12 +8,8 @@ public class EditTaskDialog extends InsertOrEditTaskDialog {
     private static PostEditExecution reloadAdapter;
     private static Task drivingTask;
 
-    public EditTaskDialog(){
-        super();
-    }
-
     public EditTaskDialog(Task drivingTask, PostEditExecution reloadAdapter) {
-        super(drivingTask);
+        super(drivingTask, "Add Task");
         EditTaskDialog.drivingTask = drivingTask;
         EditTaskDialog.reloadAdapter = reloadAdapter;
     }
