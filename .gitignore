@@ -15,3 +15,4 @@ out/
 project.properties
 ant.properties
 local.properties
+private.gradle

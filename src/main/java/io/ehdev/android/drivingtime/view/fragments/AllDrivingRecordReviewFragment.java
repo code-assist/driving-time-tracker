@@ -101,7 +101,7 @@ public class AllDrivingRecordReviewFragment extends AbstractListDrivingRecordFra
             @Override
             public void showDialog(Record recordToEdit) {
                 try {
-                    FragmentManager fm = getChildFragmentManager();
+                    FragmentManager fm = getFragmentManager();
                     InsertOrEditRecordDialog insertRecordDialog = getInsertRecordDialog(recordToEdit);
                     insertRecordDialog.show(fm, "Insert Record Dialog");
                 } catch (Exception e) {

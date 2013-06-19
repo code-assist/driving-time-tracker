@@ -112,7 +112,7 @@ public class TaskEditFragment extends AbstractListDrivingTaskFragment {
             @Override
             public void showDialog(Task recordToEdit) {
                 try {
-                    FragmentManager fm = getChildFragmentManager();
+                    FragmentManager fm = getFragmentManager();
                     InsertOrEditTaskDialog insertRecordDialog = new EditTaskDialog(recordToEdit, getReloadAdapter());
                     insertRecordDialog.show(fm, "Insert Record Dialog");
                 } catch (Exception e) {

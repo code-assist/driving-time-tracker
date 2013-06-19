@@ -171,11 +171,12 @@ public class RootActivity extends Activity implements ActionBar.TabListener {
     }
 
     private DialogFragment getInsertRecordDialog() throws SQLException {
-        final List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
+        List<Task> drivingTaskList = databaseHelper.getTaskDao().queryForAll();
         if(drivingTaskList.size() == 0){
             return new EditTaskDialog(new Task("", Duration.standardHours(1)), new PostEditExecution() {
                 @Override
-                public void execute() { createAddEntry(); }
+                public void execute() {
+                }
             });
         } else {
             Record drivingRecord = new Record(drivingTaskList.get(0), new DateTime(), Duration.standardHours(1));
