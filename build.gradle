@@ -37,7 +37,9 @@ android {
     }
 }
 
-apply from: 'private.gradle'
+signingFile = file("private-storage/ehdev-signing.gradle")
+if(signingFile.exists())
+    apply from: signingFile
 
 repositories {
     mavenCentral()

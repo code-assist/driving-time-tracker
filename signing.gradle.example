@@ -1,0 +1,4 @@
+android.signingConfigs.release.storeFile file("foo/bar/keystore")
+android.signingConfigs.release.storePassword "store password"
+android.signingConfigs.release.keyAlias "alias"
+android.signingConfigs.release.keyPassword "key password"

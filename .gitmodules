@@ -1,0 +1,3 @@
+[submodule "private-storage"]
+	path = private-storage
+	url = git@github.com:ethankhall/private-storage.git
