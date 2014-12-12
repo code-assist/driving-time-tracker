@@ -12,10 +12,6 @@ buildscript {
 apply plugin: 'idea'
 apply plugin: 'android'
 
-def signingFile = file("private-storage/ehdev-signing.gradle")
-if(signingFile.exists())
-    apply from: signingFile
-
 android {
     compileSdkVersion 19
     buildToolsVersion = "19.1.0"
@@ -38,6 +34,11 @@ android {
         }
     }
 }
+
+def signingFile = file("private-storage/ehdev-signing.gradle")
+if(signingFile.exists())
+    apply from: signingFile
+
 
 repositories {
     mavenCentral()
