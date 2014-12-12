@@ -5,23 +5,26 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.android.tools.build:gradle:0.14.4'
     }
 }
 
 apply plugin: 'idea'
-//apply plugin: 'java'
-
 apply plugin: 'android'
+
+def signingFile = file("private-storage/ehdev-signing.gradle")
+if(signingFile.exists())
+    apply from: signingFile
+
 android {
-    compileSdkVersion 14
-    buildToolsVersion = "17"
+    compileSdkVersion 19
+    buildToolsVersion = "19.1.0"
 
     defaultConfig {
         versionCode 1
         versionName "1.0"
-        minSdkVersion 14
-        targetSdkVersion 17
+        minSdkVersion 19
+        targetSdkVersion 19
     }
 
     signingConfigs {
@@ -31,15 +34,10 @@ android {
     buildTypes {
         release {
             debuggable false
-            jniDebugBuild false
             signingConfig signingConfigs.release
         }
     }
 }
-
-signingFile = file("private-storage/ehdev-signing.gradle")
-if(signingFile.exists())
-    apply from: signingFile
 
 repositories {
     mavenCentral()
